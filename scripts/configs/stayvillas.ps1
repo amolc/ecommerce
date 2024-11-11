@@ -1,7 +1,7 @@
 $env:DJANGO_SETTINGS_MODULE = 'restserver.settings'
 $env:SERVICE_PORT = '9001'
 $env:MYSQL_USER = 'stockrobot'
-$env:MYSQL_DB = 'stayvillas'
+$env:MYSQL_DB = 'ecommerce'
 $env:MYSQL_HOST = 'api.stayvillas.co'
 $env:MYSQL_PASSWORD = '10gXWOqeaf'
 $env:MYSQL_PORT = '5432'
