@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="Pyhton" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Property_manager API &mdash; stayvillas 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2050829"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cancellation API" href="cancellation.html" />
+    <link rel="prev" title="Property API" href="property.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            stayvillas
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="agent.html">Agent API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enquiry.html">Enquiry API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="invester.html">Invester API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="property.html">Property API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Property_manager API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getproperty-manager">GetProperty_manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getproperty-managerbyid">GetProperty_managerById</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#createproperty-manager">CreateProperty_manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updateproperty-manager">UpdateProperty_manager</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cancellation.html">Cancellation API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customer.html">Customer API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event.html">Event API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="destination.html">Destination API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking.html">Booking API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="users.html">stayvillas documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">stayvillas</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Property_manager API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/property_manager.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="property-manager-api">
+<h1>Property_manager API<a class="headerlink" href="#property-manager-api" title="Link to this heading"></a></h1>
+<p>This document describes the (Create, Read, Update) operations for the <cite>Property_manager</cite> model in the application.</p>
+<p><strong>Property_manager Model</strong></p>
+<p>The <cite>Property_manager</cite> model represents a user in the system and includes the following fields:</p>
+<ul class="simple">
+<li><p><cite>org_id</cite> (integer): The organization ID associated with the customer.</p></li>
+<li><p><cite>manager_name</cite> (string): The name of the property manager</p></li>
+<li><p><cite>manager_email</cite> (string):The email address of the property manager</p></li>
+<li><p><cite>manager_phone</cite> (string): The phone number of the property manager.</p></li>
+<li><p><cite>availability_status</cite> (string): The current availability status of the property manager</p></li>
+<li><p><cite>date_of_hire</cite> (date): The date the property manager was hired</p></li>
+<li><p><cite>total_properties_managed</cite> (string): The total number of properties the property manager is responsible for.</p></li>
+<li><p><cite>address</cite> (string):The address of the property manager</p></li>
+</ul>
+<p><strong>URL</strong></p>
+<p><strong>Local Development URL:</strong></p>
+<ul class="simple">
+<li><p><cite>baseurl`</cite> = &quot;<a class="reference external" href="http://localhost:7777/1/api/">http://localhost:7777/1/api/</a>&quot;</p></li>
+</ul>
+<p><strong>Production URL:</strong></p>
+<ul class="simple">
+<li><p><cite>baseurl`</cite> = &quot;<a class="reference external" href="https://api.sunandsandapi.com/1/api/">https://api.sunandsandapi.com/1/api/</a>&quot;</p></li>
+</ul>
+<section id="getproperty-manager">
+<h2>GetProperty_manager<a class="headerlink" href="#getproperty-manager" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">baseUrl/org_id/api/property_manager/get-property_manager/</span></code></p></li>
+<li><p><strong>Response Body:</strong></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;org_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;manager_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Onkar&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;manager_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;okdaw@gmail.com&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;manager_phone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;+1237356789&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;availability_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;date_of_hire&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-09-21T12:34:56Z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;total_properties_managed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123 Main St, Anytown, USA&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="getproperty-managerbyid">
+<h2>GetProperty_managerById<a class="headerlink" href="#getproperty-managerbyid" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/{org_id}/api/property_manager/get-property_manager/{Id}/</span></code></p></li>
+<li><p><strong>Response Body:</strong></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;org_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Onkar&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;okdaw@gmail.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_phone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;+1237356789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;availability_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;date_of_hire&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-09-21T12:34:56Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_properties_managed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123 Main St, Anytown, USA&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="createproperty-manager">
+<h2>CreateProperty_manager<a class="headerlink" href="#createproperty-manager" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">baseUrl/org_id/api/property_manager/create-property_manager/</span></code></p></li>
+<li><p><strong>Request Body:</strong></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="p">{</span>
+<span class="nt">&quot;manager_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaishalikad&quot;</span><span class="p">,</span>
+<span class="nt">&quot;manager_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaishali22@example.com&quot;</span><span class="p">,</span>
+<span class="nt">&quot;manager_phone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;+1245676789&quot;</span><span class="p">,</span>
+<span class="nt">&quot;availability_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="nt">&quot;date_of_hire&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-09-15T12:34:56Z&quot;</span><span class="p">,</span>
+<span class="nt">&quot;total_properties_managed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234 Elm St, Springfield&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Response Body:</strong></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;org_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaishalikad&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaishali22@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_phone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;+1245676789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;availability_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;date_of_hire&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-09-15T12:34:56Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_properties_managed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234 Elm St, Springfield&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>}</p>
+</section>
+<section id="updateproperty-manager">
+<h2>UpdateProperty_manager<a class="headerlink" href="#updateproperty-manager" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">Patch</span> <span class="pre">baseUrl/org_id/api/property_manager/update-property_manager/{Id}/</span></code></p></li>
+<li><p><strong>Request Body:</strong></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="p">{</span>
+<span class="nt">&quot;manager_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaishali&quot;</span><span class="p">,</span>
+<span class="nt">&quot;manager_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kadbhane@example.com&quot;</span><span class="p">,</span>
+<span class="nt">&quot;manager_phone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;+15673456789&quot;</span><span class="p">,</span>
+<span class="nt">&quot;availability_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="nt">&quot;date_of_hire&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-09-15T12:34:56Z&quot;</span><span class="p">,</span>
+<span class="nt">&quot;total_properties_managed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234 Elm St, Springfield&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Response Body:</strong></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;org_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vaishali&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kadbhane@example.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;manager_phone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;+15673456789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;availability_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;date_of_hire&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-09-15T12:34:56Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_properties_managed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1234 Elm St, Springfield&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>[Link Text](<a class="reference external" href="file:///C:/Users/vaishali%20mayuresh/OneDrive/Desktop/Project2024/stayvillas-api/docs/build/html/Destination.html">file:///C:/Users/vaishali%20mayuresh/OneDrive/Desktop/Project2024/stayvillas-api/docs/build/html/Destination.html</a>)</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="property.html" class="btn btn-neutral float-left" title="Property API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cancellation.html" class="btn btn-neutral float-right" title="Cancellation API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Amol c.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

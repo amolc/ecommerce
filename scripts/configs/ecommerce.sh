@@ -12,11 +12,11 @@ export REDIS_HOST="127.0.0.1"
 export REDIS_PORT="6379"
 
 # config for api server
-REPO_DIR="/home/ubuntu/repos/stayvillas-api"
+REPO_DIR="/home/ubuntu/repos/ecommerce-api"
 REPO_BRANCH="main"
-PROJECT_DEST="/home/ubuntu/stayvillas-api"
+PROJECT_DEST="/home/ubuntu/ecommerce-api"
 APISERVER="restserver"
-STATIC_DIR="/home/ubuntu/stayvillas-api/static"
+STATIC_DIR="/home/ubuntu/ecommerce-api/static"
 EXCLUDE_DIRS="logs/ /.git/ /datafeed/csv/ venv/"
 
 # supervisor names
