@@ -6,6 +6,7 @@ class Subcategory(models.Model):
     subcategory_name = models.CharField(max_length=100)  # Name of the subcategory
     subcategory_description = models.TextField(blank=True, null=True)  # Optional field
     created_at = models.DateTimeField(auto_now_add=True)
+    org_id = models.IntegerField(blank=True, null=True)  # Simple integer field for org_id
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 

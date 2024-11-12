@@ -8,7 +8,7 @@ from .serializers import SubcategorySerializer
 class SubcategoryViews(APIView):
     
     # POST method to create a subcategory (using org_id and category_id)
-    def post(self, request, org_id, category_id=None,*args, **kwargs):
+    def post(self, request, org_id, category_id=None,):
         # Optionally add category_id to request data if needed for subcategory creation
         request_data = request.data.copy()
         request_data['category_id'] = category_id  # Assuming category_id is part of the subcategory data

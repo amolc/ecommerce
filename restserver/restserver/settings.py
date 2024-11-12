@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'event',
     'categories',
     'subcategories',
+    'product'
 
     
 ]

@@ -8,18 +8,16 @@ class SubcategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subcategory
-        fields = ['id', 'subcategory_name', 'subcategory_description', 'created_at', 'updated_at', 'is_active', 'category', 'category_name']
-
+        fields = '__all__'  
+        
     def create(self, validated_data):
         # Create a new subcategory with the validated data
-        category = validated_data.get('category')
         subcategory_name = validated_data.get('subcategory_name')
         subcategory_description = validated_data.get('subcategory_description')
         is_active = validated_data.get('is_active', True)
 
         # Create a Subcategory object
         subcategory = Subcategory.objects.create(
-            category=category,
             subcategory_name=subcategory_name,
             subcategory_description=subcategory_description,
             is_active=is_active
