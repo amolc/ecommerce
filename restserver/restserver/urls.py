@@ -36,6 +36,9 @@ urlpatterns = [
     path("<int:org_id>/api/property_manager/" , include('property_manager.urls')),
     path("<int:org_id>/api/booking/" , include('booking.urls')),
     path("<int:org_id>/api/event/" , include('event.urls')),
+    path("<int:org_id>/api/categories/" , include('categories.urls')),
+    path("<int:org_id>/api/subcategories/" , include('subcategories.urls')),
+
     path('sentry-debug/', trigger_error),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
