@@ -23,3 +23,5 @@ jobs:
             cd /home/ubuntu/repos/ecommerce-api
             ./scripts/deployapi_ns1.sh ecommerce
           EOF
+
+          # this is a test
