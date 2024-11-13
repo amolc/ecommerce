@@ -9,8 +9,7 @@ class Subcategory(models.Model):
     org_id = models.IntegerField(blank=True, null=True)  # Simple integer field for org_id
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
-
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories', default=1)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories', null=False)
 
     def __str__(self):
         return self.subcategory_name  # Corrected to return subcategory_name

@@ -26,14 +26,10 @@ def trigger_error(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("<int:org_id>/api/customer/", include("customers.urls")),
-    path("<int:org_id>/api/categories/" , include('categories.urls')),
-    path("<int:org_id>/api/subcategories/" , include('subcategories.urls')),
+    path("<int:org_id>/api/category/" , include('categories.urls')),
+    path("<int:org_id>/api/subcategory/" , include('subcategories.urls')),
     path("<int:org_id>/api/product/" , include('product.urls')),
 
 
     path('sentry-debug/', trigger_error),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-
-

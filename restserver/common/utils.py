@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # custom
-from customers.models import Logs
+# from customers.models import Logs
 
 
 def Log(transaction_name, msg, Mode=None, userid=None):

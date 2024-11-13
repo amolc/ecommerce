@@ -4,12 +4,4 @@ from .models import Category
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = [
-            'id', 
-            'category_name', 
-            'category_description', 
-            'created_at', 
-            'updated_at', 
-            'is_active'
-        ]
-        
+        fields = '__all__'  # Make sure all fields are being serialized

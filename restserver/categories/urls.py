@@ -3,10 +3,10 @@ from .views import CategoryAPIView
 
 urlpatterns = [
     # Destination routes
-    path('categories/', CategoryAPIView.as_view()),  
-    path('create-categories/', CategoryAPIView.as_view()), 
-    path('categories/<int:category_id>/', CategoryAPIView.as_view()),  
-    path('delete-categories/<int:category_id>/', CategoryAPIView.as_view()),  
+    path('category/', CategoryAPIView.as_view()),  
+    path('create-category/', CategoryAPIView.as_view()), 
+    path('category/<int:category_id>/', CategoryAPIView.as_view()),  
+    path('delete-category/<int:category_id>/', CategoryAPIView.as_view()),  
 
 
 ]

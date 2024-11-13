@@ -9,15 +9,21 @@ class CategoryAPIView(APIView):
     def get(self, request, org_id=None, category_id=None):
         if category_id:
             try:
+                print(f"Fetching category with id: {category_id}")  # Debugging line
                 category = Category.objects.get(id=category_id)
                 serializer = CategorySerializer(category)
+                print(f"Category found: {serializer.data}")  # Debugging line
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except Category.DoesNotExist:
+                print(f"Category with id {category_id} not found")  # Debugging line
                 return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             categories = Category.objects.all()
+            print(f"Fetched categories: {categories}")  # Debugging line
             serializer = CategorySerializer(categories, many=True)
+            print(f"Serialized categories: {serializer.data}")  # Debugging line
             return Response(serializer.data, status=status.HTTP_200_OK)
+
 
     # POST method to create a new category
     def post(self, request,org_id, *args, **kwargs):  # Removed org_id as it's not being used
