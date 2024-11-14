@@ -29,6 +29,11 @@ urlpatterns = [
     path("<int:org_id>/api/category/" , include('categories.urls')),
     path("<int:org_id>/api/subcategory/" , include('subcategories.urls')),
     path("<int:org_id>/api/product/" , include('product.urls')),
+    path("<int:org_id>/api/order/" , include('order.urls')),
+    path("<int:org_id>/api/orderItem/" , include('order_items.urls')),
+
+
+
 
 
     path('sentry-debug/', trigger_error),

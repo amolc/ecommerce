@@ -15,25 +15,25 @@ from common.utils import StayVillasResponse
 
 class RegisterCustomerViews(APIView):
     def post(self, request, org_id=None):
-        print("line 18",request.data)
+        print("line 18", request.data)
 
         request_data = request.data.copy()
         request_data["org_id"] = org_id
 
+        # Use the RegisterCustomerSerializer to handle registration
         serializer_class = RegisterCustomerSerializer(data=request_data)
 
         if serializer_class.is_valid():
-            serializer_class.save()
-            api_response = Response(serializer_class.data, status=status.HTTP_201_CREATED)
+            # Save the customer and return the user_id (ID of the newly created customer)
+            customer = serializer_class.save()
+            response_data = serializer_class.data
+            response_data['user_id'] = customer.id  # Explicitly add user_id to the response
+
+            api_response = Response(response_data, status=status.HTTP_201_CREATED)
         else:
-            api_response = Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)     
+            api_response = Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return api_response
-        
-        # except Exception as e:
-        #     traceback.print_exc()  # Log the traceback for debugging
-        #     return StayVillasResponse.exception_error(self.__class__.__name__, request, e)
-        
 
 class AuthenticateUser(APIView):
     
@@ -45,7 +45,7 @@ class AuthenticateUser(APIView):
                 print("User Instance:", user)
                 print("User Instance Type:", type(user))
 
-                # Verify user exists and is an instance of flipopoUser
+                # Verify user exists and is an instance of Customers
                 user_data = Customers.objects.filter(email=request.data['email']).first()
                 if not user_data:
                     return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -60,7 +60,8 @@ class AuthenticateUser(APIView):
                 token_instance, token = AuthToken.objects.create(user=user_data)
                 print("Generated Token:", token)
 
-                user_id = user_data.id
+                user_id = user_data.id  # This is the customer_id
+                # Optional: Update last login if needed (uncomment if required)
                 # Customers.objects.filter(id=user_id).update(lastLogin=datetime.now(timezone.utc))
 
                 is_super_admin = user_data.is_super_admin
@@ -69,20 +70,15 @@ class AuthenticateUser(APIView):
                 displayName = user_data.first_name
                 email_id = user_data.email
 
-                # if profileImage:
-                #     profileImage = request.build_absolute_uri(user_data.profileImage.url)
-                # else:
-                #     profileImage = ''
-
+                # Prepare the response data
                 data = {
                     "status": status.HTTP_200_OK,
-                    'user_id': user_id,
+                    'user_id': user_id,  # Return user_id (customer_id)
                     'is_super_admin': is_super_admin,
                     'is_admin': is_admin,
                     'is_customer': is_customer,
                     'displayName': displayName,
                     'emailId': email_id,
-                    # 'profileImage': profileImage,
                     "message": "Logged-in Successfully",
                     "Token": token
                 }
@@ -94,7 +90,6 @@ class AuthenticateUser(APIView):
 
         except Exception as e:
             return StayVillasResponse.exception_error(self.__class__.__name__, request, e)
-
 
 
 class CustomerViews(APIView):

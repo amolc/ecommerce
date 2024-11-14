@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stayvillas documentation &mdash; stayvillas 1.0 documentation</title>
+  <title>ecommerce-api documentation &mdash; stayvillas 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -20,9 +20,7 @@
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Cancellation API" href="cancellation.html" />
-    <link rel="prev" title="Property_manager API" href="property_manager.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,20 +43,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="agent.html">Agent API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="enquiry.html">Enquiry API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="invester.html">Invester API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="property.html">Property API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="property_manager.html">Property_manager API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">stayvillas documentation</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cancellation.html">Cancellation API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="customer.html">Customer API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event.html">Event API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="destination.html">Destination API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="booking.html">Booking API</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="categories.html">Category API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subcategories.html">Subcategory API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="product.html">Product API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html">Customers API</a></li>
 </ul>
 
         </div>
@@ -75,7 +64,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">stayvillas documentation</li>
+      <li class="breadcrumb-item active">ecommerce-api documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/users.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -85,22 +74,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="stayvillas-documentation">
-<h1>stayvillas documentation<a class="headerlink" href="#stayvillas-documentation" title="Link to this heading"></a></h1>
+  <section id="ecommerce-api-documentation">
+<h1>ecommerce-api documentation<a class="headerlink" href="#ecommerce-api-documentation" title="Link to this heading"></a></h1>
 <p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
 documentation for details.</p>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="categories.html">Category API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="categories.html#getcategory">Getcategory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="categories.html#getcategorybyid">GetCategorybyId</a></li>
+<li class="toctree-l2"><a class="reference internal" href="categories.html#createcategory">CreateCategory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="categories.html#updatecategory">UpdateCategory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="subcategories.html">Subcategory API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="subcategories.html#getsubcategory">Getsubcategory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subcategories.html#getsubcategorybyid">GetSubcategorybyId</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subcategories.html#createsubcategory">CreateSubcategory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subcategories.html#updatesubcategory">UpdateSubcategory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="product.html">Product API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="product.html#getproduct">GetProduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#getproductbyid">GetProductbyId</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#createproduct">CreateProduct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#updateproduct">UpdateProduct</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="customers.html">Customers API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#getcustomers">GetCustomers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#getcustomersbyid">GetCustomersbyId</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers.html#createcustomers">CreateCustomers</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="property_manager.html" class="btn btn-neutral float-left" title="Property_manager API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cancellation.html" class="btn btn-neutral float-right" title="Cancellation API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

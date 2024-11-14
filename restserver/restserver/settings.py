@@ -55,12 +55,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     "corsheaders",
     'knox',
     'customers',
     'categories',
     'subcategories',
-    'product'
+    'product',
+    'order',
+    'order_items'
 
     
 ]

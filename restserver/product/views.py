@@ -4,16 +4,30 @@ from rest_framework import status
 from .models import Product
 from .serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
+from customers.models import Customers  # Ensure Customers is imported
+
 
 class ProductViews(APIView):
     # POST method to create a product
     def post(self, request, org_id=None):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print("Request data:", request.data)  # Print the full request body
+        
+        try:
+            # Create a new product using the request data
+            serializer = ProductSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                
+                # Return the success response along with the created product
+                return Response({
+                    "status": "success",
+                    "data": serializer.data
+                }, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     # GET method to fetch all products or filter by category or org_id
     def get(self, request, id=None, category_id=None, org_id=None):
         if id:
