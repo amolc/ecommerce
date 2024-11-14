@@ -21,5 +21,6 @@ documentation for details.
    customers
    order
    order_items
+   staff
 
    

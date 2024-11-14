@@ -11,3 +11,7 @@ Welcome to the ecommerce-api documentation. We will strive to provide all releva
    subcategories
    product
    customers
+   staff
+   seller
+   buyer
+   delivery
