@@ -38,6 +38,10 @@ fi
 # source venv/bin/activate
 # # cd "$REPO_DIR/$APISERVER/"
 # pip install -r requirements.txt
+echo "Update docs directory"
+cd "$PROJECT_DEST/docs/build/html"
+rsync -a --info=NAME,PROGRESS  "$REPO_DIR/docs/build/html/" .
+
 
 echo "Update project directory"
 cd "$PROJECT_DEST/$APISERVER"
