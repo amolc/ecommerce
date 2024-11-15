@@ -5,7 +5,7 @@ class Order(models.Model):
     order_id = models.AutoField(primary_key=True)  # Unique order ID
     first_name = models.CharField(max_length=50)  # Customer's first name
     last_name = models.CharField(max_length=50)  # Customer's last name
-
+    org_id = models.PositiveIntegerField(blank=True, null=True)
     billing_address = models.TextField()  # Billing address for the order
     shipping_address = models.TextField()  # Shipping address for the order
     order_date = models.DateTimeField(auto_now_add=True)  # Date and time of order creation

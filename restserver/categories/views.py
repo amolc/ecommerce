@@ -34,7 +34,7 @@ class CategoryAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # PUT method to update an existing category
-    def put(self, request,org_id, category_id):
+    def patch(self, request,org_id, category_id):
         try:
             category = Category.objects.get(id=category_id)
         except Category.DoesNotExist:

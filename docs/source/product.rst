@@ -23,9 +23,6 @@ GetProduct
             "product_description": "This is a description of the example product.",
             "price": "19.99",
             "stock_quantity": 100,
-            "org_id": 1,
-            "created_at": "2024-11-12T06:34:16.731791Z",
-            "updated_at": "2024-11-12T06:34:16.731791Z",
             "is_active": true,
             "category": 2,
             "subcategory": null
@@ -86,7 +83,6 @@ CreateProduct
     "product_description": "This is a sample product description.",
     "price": 99.99,
     "stock_quantity": 100,
-    "org_id": 10,
     "category": 2,
     "subcategory": 5,
     "is_active": true
@@ -112,8 +108,8 @@ CreateProduct
         "is_active": true,
         "category": 2,
         "subcategory": 5
+        }
     }
-}
 
 
 
@@ -129,14 +125,12 @@ UpdateProduct
 
     
         {
-    "id": 5,
-    "Product_name": "Dairy",
-    "Product_description": "all types dairy product available",
-    "org_id": null,
-    "created_at": "2024-11-12T04:51:03.280121Z",
-    "updated_at": "2024-11-12T04:51:03.280121Z",
-    "is_active": true
-
+        
+        "product_name": "Example product ",
+        "product_description": "This is a description of the example product.",
+        "price": "19.99",
+        "stock_quantity": 100,
+        "is_active": true
         }
 
 - **Description:** Updates information for a specific Product.
@@ -146,14 +140,19 @@ UpdateProduct
   .. code-block:: json
 
     {
-        {
-    "id": 5,
-    "Product_name": "Dairy",
-    "Product_description": "all types dairy product available",
-    "org_id": null,
-    "created_at": "2024-11-12T04:51:03.280121Z",
-    "updated_at": "2024-11-12T04:51:03.280121Z",
-    "is_active": true
+    "status": "success",
+    "data": {
+        "id": 1,
+        "product_name": "Example product",
+        "product_description": "This is a description of the example product.",
+        "price": "19.99",
+        "stock_quantity": 100,
+        "org_id": 1,
+        "created_at": "2024-11-12T06:34:16.731791Z",
+        "updated_at": "2024-11-15T06:17:43.591957Z",
+        "is_active": true,
+        "category": 2,
+        "subcategory": null
         }
     }
     

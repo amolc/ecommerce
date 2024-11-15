@@ -69,17 +69,16 @@ Createseller
 
   .. code-block:: json
 
-     {
-            "first_name": "John",
-            "last_name": "Doe",
-            "email": "john.doe@example.com",
-            "phone_number": "+1234567890",
-            "role": "Manager",
-            "status": "Active",
-            "hire_date": "2024-11-14",
-            "address": "123 Villa Street, Stayvillas, City, Country",
-            "salary": 5000.00
-        }
+    {
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "email": "alice.smith@example.com",
+        "phone_number": "+1234567890",
+        "company_name": "Alice's Fine Goods",
+        "address": "456 Commerce Street, Cityville, Country",
+        "status": "Active",
+        "registration_date": "2024-11-14"
+    }
 
 - **Description:** Adds a new seller to the system.
 
@@ -88,15 +87,18 @@ Createseller
   .. code-block:: json
 
     {
-        "first_name": "John",
-        "last_name": "Doe",
-        "email": "john.doe@example.com",
+        "seller_id": 1,
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "email": "alice.smith@example.com",
         "phone_number": "+1234567890",
-        "role": "Manager",
+        "company_name": "Alice's Fine Goods",
+        "address": "456 Commerce Street, Cityville, Country",
         "status": "Active",
-        "hire_date": "2024-11-14",
-        "address": "123 Villa Street, Stayvillas, City, Country",
-        "salary": 5000.00
+        "registration_date": "2024-11-14",
+        "product_count": 120,
+        "rating": 4.5,
+        "sales_total": 20000.00
     }
 
 
@@ -113,16 +115,20 @@ Updateseller
   .. code-block:: json
 
     
-        {
-    "id": 5,
-    "seller_name": "Dairy",
-    "seller_description": "all types dairy seller available",
-    "org_id": null,
-    "created_at": "2024-11-12T04:51:03.280121Z",
-    "updated_at": "2024-11-12T04:51:03.280121Z",
-    "is_active": true
-
-        }
+    {
+    "seller_id": 1,
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "email": "alice.smith@example.com",
+    "phone_number": "+1234567890",
+    "company_name": "Alice's Fine Goods",
+    "address": "456 Commerce Street, Cityville, Country",
+    "status": "Active",
+    "registration_date": "2024-11-14",
+    "product_count": 120,
+    "rating": 4.5,
+    "sales_total": 20000.00
+    }
 
 - **Description:** Updates information for a specific seller.
 
@@ -130,15 +136,20 @@ Updateseller
 
   .. code-block:: json
 
-    {
-        
-    "id": 5,
-    "seller_name": "Dairy",
-    "seller_description": "all types dairy seller available",
-    "org_id": null,
-    "created_at": "2024-11-12T04:51:03.280121Z",
-    "updated_at": "2024-11-12T04:51:03.280121Z",
-    "is_active": true
-        
+    { 
+        "seller_id": 1,
+        "first_name": "Ali",
+        "last_name": "Smith",
+        "email": "ali.smith@example.com",
+        "phone_number": "+1234567890",
+        "company_name": "Alice's Fine Goods",
+        "address": "456 Commerce Street, Cityville, Country",
+        "status": "Active",
+        "registration_date": "2024-11-14",
+        "product_count": 120,
+        "rating": 4.5,
+        "sales_total": 20000.00
     }
-    
+            
+        
+        

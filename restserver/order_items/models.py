@@ -2,6 +2,8 @@ from django.db import models
 from order.models import Order
 
 class OrderItems(models.Model):
+    id = models.AutoField(primary_key=True)
+    org_id = models.PositiveIntegerField(blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')  # Link to Order
     product_name = models.CharField(max_length=255)  # Name of the product
     product_qty = models.PositiveIntegerField()  # Quantity of the product ordered
