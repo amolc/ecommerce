@@ -49,20 +49,38 @@ class OrderViews(APIView):
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+# def patch(self, request, id=None, org_id=None):
+#         """Update an existing order by ID."""
+#         if not id:
+#             return Response({'status': 'error', 'message': 'ID is required for update'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         order = get_object_or_404(Order, id=id)
+#         serializer = OrderSerializer(order, data=request.data, partial=True)
+
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def patch(self, request, id=None, org_id=None):
         """Update an existing order by ID."""
         if not id:
             return Response({'status': 'error', 'message': 'ID is required for update'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Fetch the order by ID
         order = get_object_or_404(Order, id=id)
+
+        # Serialize the data for the update
         serializer = OrderSerializer(order, data=request.data, partial=True)
 
+        # Validate and save the updated order
         if serializer.is_valid():
             serializer.save()
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
+        # Return errors if validation fails
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        
 def delete(self, request, id=None, org_id=None):
     """Delete an existing order by ID."""
     if not id:
