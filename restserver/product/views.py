@@ -32,12 +32,12 @@ class ProductViews(APIView):
     def get(self, request, id=None, category_id=None, org_id=None):
         # If an ID is provided, fetch and return a specific product by ID
         if id:
-            product = get_object_or_404(Product, id=id)
+            product = get_object_or_404(Products, id=id)
             serializer = ProductSerializer(product)
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
         # Otherwise, fetch products with optional filters
-        products = Product.objects.all()
+        products = Products.objects.all()
 
         # Apply category_id filter if provided
         if category_id is not None:
@@ -74,7 +74,7 @@ class ProductViews(APIView):
             return Response({'status': 'error', 'message': 'ID is required for update'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Attempt to fetch the product with both id and org_id
-        product = Product.objects.filter(id=id).first()
+        product = Products.objects.filter(id=id).first()
         if not product:
             return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -89,8 +89,8 @@ class ProductViews(APIView):
     # DELETE method to delete a product
     def delete(self, request,org_id, id):
         try:
-            product = Product.objects.get(id=id)
+            product = Products.objects.get(id=id)
             product.delete()
             return Response({"message": "Category deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-        except Product.DoesNotExist:
+        except Products.DoesNotExist:
             return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
