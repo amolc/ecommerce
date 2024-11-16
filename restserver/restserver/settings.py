@@ -63,7 +63,9 @@ INSTALLED_APPS = [
     'subcategories',
     'product',
     'order',
-    'order_items'
+    'order_items',
+    'admins'
+    
 
     
 ]

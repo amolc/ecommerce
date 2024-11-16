@@ -31,6 +31,7 @@ urlpatterns = [
     path("<int:org_id>/api/product/" , include('product.urls')),
     path("<int:org_id>/api/order/" , include('order.urls')),
     path("<int:org_id>/api/orderItem/" , include('order_items.urls')),
+    path("<int:org_id>/api/admin/" , include('admins.urls')),
 
 
 

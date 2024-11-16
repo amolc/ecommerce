@@ -9,7 +9,7 @@ from rest_framework import status
 # from customers.models import Logs
 
 
-def Log(transaction_name, msg, Mode=None, userid=None):
+def Logs(transaction_name, msg, Mode=None, userid=None):
     
     HOSTNAME = socket.gethostname()
     Logs.objects.create(
