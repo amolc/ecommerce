@@ -28,6 +28,7 @@ class CategoryAPIView(APIView):
     # POST method to create a new category
     def post(self, request,org_id, *args, **kwargs):  # Removed org_id as it's not being used
         serializer = CategorySerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()  # Assuming no org_id or other additional fields are needed
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -4,6 +4,10 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Subcategory, Category
 from .serializers import SubcategorySerializer
+from categories.models import Category
+from categories.serializers  import CategorySerializer
+
+
 
 
 class SubcategoryViews(APIView):
@@ -12,7 +16,7 @@ class SubcategoryViews(APIView):
     def post(self, request, org_id):
         # Ensure category_id is provided in the request body
         category_id = request.data.get('category_id')  # Extract category_id from request body
-
+        
         if not category_id:
             return Response({"status": "error", "message": "Category ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -24,6 +28,14 @@ class SubcategoryViews(APIView):
         request_data['category'] = category.id  # Set category field using category_id
         request_data['org_id'] = org_id  # Include org_id in the request data if required
 
+        print("Request data:", request.data)  # Print the full request body
+        data = request.data
+        
+        category_object = Category.objects.get(id=category.id)
+        serializer = CategorySerializer(category_object)
+        category_name = serializer.data['category_name']
+
+        print('line 22', category_name)
         # Serialize and save the subcategory data
         serializer = SubcategorySerializer(data=request_data)
         if serializer.is_valid():

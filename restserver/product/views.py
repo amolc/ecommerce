@@ -5,13 +5,39 @@ from .models import Products
 from .serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
 from customers.models import Customers  # Ensure Customers is imported
+from categories.models import Category
+from subcategories.models import Subcategory
+from categories.serializers  import CategorySerializer
+from subcategories.serializers import SubcategorySerializer
 
 
 class ProductViews(APIView):
     # POST method to create a product
     def post(self, request, org_id=None):
         print("Request data:", request.data)  # Print the full request body
+        data = request.data
+        categoryid = data['category'] 
+        category_object = Category.objects.get(id=categoryid)
+        serializer = CategorySerializer(category_object)
+        category_name = serializer.data['category_name']
+
+        print('line 22', category_name)
         
+
+        subcategoryid =data['subcategory']
+       
+        subcategory_object = Subcategory.objects.get(id=subcategoryid)
+        subcategory_serializer = SubcategorySerializer(subcategory_object)
+        subcategory_name = subcategory_serializer.data.get('subcategory_name')
+
+        print('line 18', categoryid )
+        print('line 19', subcategoryid)
+        print('Category Name:', category_name)
+        print('Subategory Name:', subcategory_name)
+
+        print('Category Serialized Data:', CategorySerializer.data)
+        print('Subcategory Serialized Data:', subcategory_serializer.data)
+
         try:
             # Create a new product using the request data
             serializer = ProductSerializer(data=request.data)

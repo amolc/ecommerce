@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import Subcategory
-# from categories.models import Category
+from categories.models import Category
 
 
 class SubcategorySerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source='category.category_name', read_only=True)
+
     class Meta:
         model = Subcategory
-        fields = ['id', 'subcategory_name', 'subcategory_description', 'org_id', 'category', 'created_at', 'updated_at', 'is_active']
+        fields = ['id', 'subcategory_name', 'category_name', 'subcategory_description', 'org_id', 'category', 'created_at', 'updated_at', 'is_active']
 
 
 # class SubcategorySerializer(serializers.ModelSerializer):

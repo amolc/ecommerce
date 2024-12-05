@@ -1,7 +1,7 @@
 from django.db import models
 from categories.models import Category
 from subcategories.models import Subcategory  # Corrected the import to use the proper model class name
-from django.utils.timezone import now
+from datetime import date
 
 # Create your models here.
 class Products(models.Model):
@@ -15,8 +15,8 @@ class Products(models.Model):
     org_id = models.PositiveIntegerField(blank=True, null=True)  # Organization ID
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', default=1)  # ForeignKey to Category
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name='products', default=1)  # ForeignKey to Subcategory
-
-    mfg = models.DateField(default=now)  # Manufacturing date
+    
+    mfg = models.DateField(default=date.today)
     product_life = models.PositiveIntegerField(default=1)  # Product life in days
     product_image1 = models.TextField(blank=True, null=True)  # First product image path
     product_image2 = models.TextField(blank=True, null=True)  # Second product image path
@@ -32,6 +32,9 @@ class Products(models.Model):
         default='organic'
     )  # Product type (veg, nonveg, organic, non-organic)
 
+
+    category_name = models.TextField(blank=True, null=True)
+    subcategory_name = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)  # Auto timestamp when created
     updated_at = models.DateTimeField(auto_now=True)  # Auto timestamp when updated
     is_active = models.BooleanField(default=True)  # Is the product active?

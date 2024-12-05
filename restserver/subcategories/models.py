@@ -10,7 +10,7 @@ class Subcategory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories', null=False)
-
+    category_name = models.TextField(blank=True, null=True)
     def __str__(self):
         return self.subcategory_name  # Corrected to return subcategory_name
 
