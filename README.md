@@ -1,10 +1,11 @@
-# ecommerce-api
+# To run on windows
 
-##To run on windows
-This scripts present here are for powershell only.Probably win 10/11 will contain powershell by default, if not present follow this link to install powershell.
+[(https://github.com/amolc/ecommerce-api] #to-run-on-windows)
 
-Note the difference b/w backslash\ and frontslashes/ used for windows and linux/mac respectively.
+> This scripts present here are for powershell only.
+> Probably win 10/11 will contain powershell by default, if not present follow this  [link](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2)  to install powershell.
 
-create virtual environment with name env
-run script on powershell .\runserver.ps1
-#Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+> Note the difference b/w backslash`\`  and frontslashes`/`  used for windows and linux/mac respectively.
+
+-   create virtual environment with name  `env`
+-   run script on powershell  `.\runserver.ps1`
