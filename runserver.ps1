@@ -1,4 +1,4 @@
-.\env\Scripts\activate
+.\venv\Scripts\activate
 .\scripts\configs\stayvillas.ps1
 pip install -r requirements.txt
 cd restserver

@@ -9,7 +9,7 @@ class Billing(models.Model):
     email = models.EmailField(max_length=255, unique=True)  # Customer's email (unique constraint ensures no duplicates)
     city = models.CharField(max_length=255)  # Customer's city
     mobile_number = models.CharField(max_length=15)  # Customer's mobile number
-    customer = models.ForeignKey(Customers, on_delete=models.CASCADE, null=True, blank=True)  # Temporarily allow null
+    
 
     # Billing-specific fields
     org_id = models.PositiveIntegerField(null=True, blank=True)  # Optional org ID

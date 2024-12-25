@@ -66,7 +66,8 @@ INSTALLED_APPS = [
     'order_items',
     'admins',
     'staff',
-    'billing'
+    'billing',
+    'inventory'
     
 
     
