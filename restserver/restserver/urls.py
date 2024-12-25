@@ -35,6 +35,7 @@ urlpatterns = [
     path("<int:org_id>/api/staff/" , include('staff.urls')),
     path("<int:org_id>/api/billing/" , include('billing.urls')),
     path('<int:org_id>/api/inventory/', include('inventory.urls')), 
+    path("<int:org_id>/api/store/" ,include('store.urls')),
 
 
 
