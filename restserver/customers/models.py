@@ -27,7 +27,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class Customers(AbstractBaseUser):
-    org_id = models.PositiveIntegerField()
+    org_id = models.PositiveIntegerField(null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     password = models.CharField(max_length=100)
     first_name = models.CharField(max_length=200)

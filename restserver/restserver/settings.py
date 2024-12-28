@@ -55,20 +55,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     "corsheaders",
     'knox',
     'customers',
-    'property',
-    'destination',
-    'investors',
-    'agent',
-    'property_listing',
-    'enquiry',
-    'cancellation',
-    'property_manager',
-    'booking',
-    'event'
-    
+    'categories',
+    'subcategories',
+    'product',
+    'order',
+    'order_items',
+    'admins',
+    'staff',
+    'billing',
+    'inventory',
+    'store',
 ]
 
 MIDDLEWARE = [
@@ -122,7 +122,7 @@ SILENCED_SYSTEM_CHECKS = ["auth.E003"]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Using MySQL engine
-        'NAME': os.environ.get('MYSQL_DB', 'stayvillas'),
+        'NAME': os.environ.get('MYSQL_DB', 'ecommerce'),
         'USER': os.environ.get('MYSQL_USER', 'stockrobot'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', '10gXWOqeaf'),
         'HOST': os.environ.get('MYSQL_HOST', 'api.stayvillas.co'),
