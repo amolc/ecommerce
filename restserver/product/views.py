@@ -55,14 +55,15 @@ class ProductViews(APIView):
             )
 
         # Otherwise, fetch products with optional filters
-        products = Products.objects.all()
-        paginator = Paginator(products, per_page=18)        
+        products = Products.objects.all()      
 
         if category_id is not None:
             products = products.filter(category_id=category_id)
 
         if search is not None:
             products = products.filter(product_name__icontains=search)
+
+        paginator = Paginator(products, per_page=18)  
 
         if page is not None:
             products_page = paginator.page(page)
