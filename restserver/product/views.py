@@ -1,14 +1,17 @@
+from django.shortcuts import get_object_or_404
+from django.core.paginator import (
+    Paginator
+)
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+from categories.models import Category
+from categories.serializers  import CategorySerializer
+
 from .models import Products
 from .serializers import ProductSerializer
-from django.shortcuts import get_object_or_404
-from customers.models import Customers  # Ensure Customers is imported
-from categories.models import Category
-from subcategories.models import Subcategory
-from categories.serializers  import CategorySerializer
-from subcategories.serializers import SubcategorySerializer
 
 
 class ProductViews(APIView):
@@ -40,11 +43,10 @@ class ProductViews(APIView):
     def get(self, request, org_id=None, id=None):
         # If an ID is provided, fetch and return a specific product by ID
         category_id = request.GET.get('category_id')
+        page = request.GET.get('page')
+        search = request.GET.get('search')
 
         if id:
-            print("getting product by id: ")
-            print(id)
-            
             product = get_object_or_404(Products, id=id)
             serializer = ProductSerializer(product)
             return Response(
@@ -54,22 +56,46 @@ class ProductViews(APIView):
 
         # Otherwise, fetch products with optional filters
         products = Products.objects.all()
+        paginator = Paginator(products, per_page=18)        
 
         if category_id is not None:
             products = products.filter(category_id=category_id)
 
+        if search is not None:
+            products = products.filter(product_name__icontains=search)
+
+        if page is not None:
+            products_page = paginator.page(page)
+        else:
+            products_page = paginator.page(1)
+
         if not products.exists():
             return Response(
-                {"status": "success", "data": [], "message": "No products found for the given filters"},
+                {
+                    "status": "success",
+                    "data": [],
+                    "message": "No products found for the given filters",
+                    "num_pages": 0,
+                    "start_index": 0,
+                    "end_index": 0
+                },
                 status=status.HTTP_200_OK
             )
 
         # Serialize and return the list of filtered products
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductSerializer(
+            products_page.object_list,
+            many=True
+        )
+
         return Response(
             {
                 "status": "success",
-                "data": serializer.data
+                "data": serializer.data,
+                "page": page,
+                "num_pages": paginator.num_pages,
+                "start_index": products_page.start_index(),
+                "end_index": products_page.end_index(),
             },
             status=status.HTTP_200_OK
         )
