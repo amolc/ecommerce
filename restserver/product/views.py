@@ -37,23 +37,26 @@ class ProductViews(APIView):
         except Exception as e:
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get(self, request, id=None, category_id=None, org_id=None):
+    def get(self, request, org_id=None, id=None):
         # If an ID is provided, fetch and return a specific product by ID
-
-        id = request.GET.get('id') if hasattr(request.GET, 'id') else None
-        category_ids = request.GET.getlist('category_id')
+        category_id = request.GET.get('category_id')
 
         if id:
+            print("getting product by id: ")
+            print(id)
+            
             product = get_object_or_404(Products, id=id)
             serializer = ProductSerializer(product)
-            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
 
         # Otherwise, fetch products with optional filters
         products = Products.objects.all()
 
-        if category_ids is not None:
-            for cat_id in category_ids:
-                products = products.filter(category_id=cat_id)
+        if category_id is not None:
+            products = products.filter(category_id=category_id)
 
         if not products.exists():
             return Response(

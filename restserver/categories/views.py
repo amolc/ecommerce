@@ -12,16 +12,13 @@ class CategoryAPIView(APIView):
                 print(f"Fetching category with id: {category_id}")  # Debugging line
                 category = Category.objects.get(id=category_id)
                 serializer = CategorySerializer(category)
-                print(f"Category found: {serializer.data}")  # Debugging line
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except Category.DoesNotExist:
                 print(f"Category with id {category_id} not found")  # Debugging line
                 return Response({"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             categories = Category.objects.all()
-            print(f"Fetched categories: {categories}")  # Debugging line
             serializer = CategorySerializer(categories, many=True)
-            print(f"Serialized categories: {serializer.data}")  # Debugging line
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
