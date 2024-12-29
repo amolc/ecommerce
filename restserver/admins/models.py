@@ -1,14 +1,6 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
-
-# Create your models here.
-from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
 
 class AdminManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
@@ -34,19 +26,50 @@ class AdminManager(BaseUserManager):
 
 
 class Admin(AbstractBaseUser):
-    org_id = models.PositiveIntegerField()
-    email = models.EmailField(null=True, blank=True)
-    password = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    mobile_number = models.CharField(max_length=15, null=True, blank=True)
-    city = models.CharField(max_length=200)
-    total_sales = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
-    hire_date = models.DateField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    is_super_admin = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-    is_agent = models.BooleanField(default=True)
+    org_id: models.PositiveIntegerField = models.PositiveIntegerField()
+    email: models.EmailField = models.EmailField(
+        null=True,
+        blank=True
+    )
+    password: models.CharField = models.CharField(
+        max_length=100
+    )
+    first_name: models.CharField = models.CharField(
+        max_length=200
+    )
+    last_name: models.CharField = models.CharField(
+        max_length=200
+    )
+    mobile_number: models.CharField = models.CharField(
+        max_length=15,
+        null=True,
+        blank=True
+    )
+    city: models.CharField = models.CharField(
+        max_length=200
+    )
+    total_sales: models.DecimalField = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    hire_date: models.DateField = models.DateField(
+        null=True,
+        blank=True
+    )
+    is_active: models.BooleanField = models.BooleanField(
+        default=True
+    )
+    is_super_admin: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_admin: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_agent: models.BooleanField = models.BooleanField(
+        default=True
+    )
 
     objects = AdminManager()
 
@@ -56,20 +79,32 @@ class Admin(AbstractBaseUser):
     class Meta:
         db_table = "Admins"
 
+
 class AdminLogs(models.Model):
-    logid = models.BigAutoField(primary_key=True, editable=False)
-    transaction_name = models.CharField(max_length=500)
-    mode = models.CharField(max_length=100)
-    log_message = models.TextField()
-    admin = models.ForeignKey(
-        "Admin", 
+    logid: models.BigAutoField = models.BigAutoField(
+        primary_key=True,
+        editable=False
+    )
+    transaction_name: models.CharField = models.CharField(
+        max_length=500
+    )
+    mode: models.CharField = models.CharField(
+        max_length=100
+    )
+    log_message: models.TextField = models.TextField()
+    admin: models.ForeignKey = models.ForeignKey(
+        "Admin",
         on_delete=models.RESTRICT,
         null=True,
         blank=True,
         related_name="log_admin_id",
     )
-    is_app = models.BooleanField(default=False)
-    log_date = models.DateTimeField(auto_now=True)
+    is_app: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    log_date: models.DateTimeField = models.DateTimeField(
+        auto_now=True
+    )
 
     class Meta:
         db_table = "AdminLogs"

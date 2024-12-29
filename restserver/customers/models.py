@@ -9,14 +9,12 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
     def create_superuser(self, email, password=None, **kwargs):
-       
         kwargs.setdefault('is_super_admin', True)
         kwargs.setdefault('is_admin', True)
 
         user = self.create_user(
-            org_id =1,
+            org_id=1,
             email=email,
             password=password,
             **kwargs
@@ -26,18 +24,48 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class Customers(AbstractBaseUser):
-    org_id = models.PositiveIntegerField(null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    password = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
-    mobile_number = models.CharField(max_length=15, null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    is_super_admin = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-    is_customer = models.BooleanField(default=False)
+    org_id: models.PositiveIntegerField = models.PositiveIntegerField(
+        null=True,
+        blank=True
+    )
+    email: models.EmailField = models.EmailField(
+        null=True,
+        blank=True
+    )
+    password: models.CharField = models.CharField(
+        max_length=100
+    )
+    first_name: models.CharField = models.CharField(
+        max_length=200
+    )
+    last_name: models.CharField = models.CharField(
+        max_length=200
+    )
+    city: models.CharField = models.CharField(
+        max_length=200
+    )
+    mobile_number: models.CharField = models.CharField(
+        max_length=15,
+        null=True,
+        blank=True
+    )
+    is_active: models.BooleanField = models.BooleanField(
+        default=True
+    )
+    is_super_admin: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_admin: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_customer: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_staff: models.BooleanField = models.BooleanField(
+        default=False
+    )
 
     objects = CustomUserManager()
 
@@ -47,24 +75,32 @@ class Customers(AbstractBaseUser):
     class Meta:
         db_table = "Customers"
 
-        
-
 
 class Logs(models.Model):
-    logid = models.BigAutoField(primary_key=True, editable=False)
-    transaction_name = models.CharField(max_length=500)
-    mode = models.CharField(max_length=100)
-    log_message = models.TextField()
-    user = models.ForeignKey(
-        "Customers", 
+    logid: models.BigAutoField = models.BigAutoField(
+        primary_key=True,
+        editable=False
+    )
+    transaction_name: models.CharField = models.CharField(
+        max_length=500
+    )
+    mode: models.CharField = models.CharField(
+        max_length=100
+    )
+    log_message: models.TextField = models.TextField()
+    user: models.ForeignKey = models.ForeignKey(
+        "Customers",
         on_delete=models.RESTRICT,
         null=True,
         blank=True,
         related_name="log_Customer_id",
     )
-    is_app = models.BooleanField(default=False)
-    log_date = models.DateTimeField(auto_now=True)
-
+    is_app: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    log_date: models.DateTimeField = models.DateTimeField(
+        auto_now=True
+    )
 
     class Meta:
         db_table = "Logs"

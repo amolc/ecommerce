@@ -19,31 +19,13 @@ class ProductViews(APIView):
         categoryid = data['category'] 
         category_object = Category.objects.get(id=categoryid)
         serializer = CategorySerializer(category_object)
-        category_name = serializer.data['category_name']
-
-        print('line 22', category_name)
-        
-
-        subcategoryid =data['subcategory']
-       
-        subcategory_object = Subcategory.objects.get(id=subcategoryid)
-        subcategory_serializer = SubcategorySerializer(subcategory_object)
-        subcategory_name = subcategory_serializer.data.get('subcategory_name')
-
-        print('line 18', categoryid )
-        print('line 19', subcategoryid)
-        print('Category Name:', category_name)
-        print('Subategory Name:', subcategory_name)
-
-        print('Category Serialized Data:', CategorySerializer.data)
-        print('Subcategory Serialized Data:', subcategory_serializer.data)
 
         try:
             # Create a new product using the request data
             serializer = ProductSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                
+
                 # Return the success response along with the created product
                 return Response({
                     "status": "success",
@@ -54,9 +36,13 @@ class ProductViews(APIView):
 
         except Exception as e:
             return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
     def get(self, request, id=None, category_id=None, org_id=None):
         # If an ID is provided, fetch and return a specific product by ID
+
+        id = request.GET.get('id') if hasattr(request.GET, 'id') else None
+        category_ids = request.GET.getlist('category_id')
+
         if id:
             product = get_object_or_404(Products, id=id)
             serializer = ProductSerializer(product)
@@ -65,14 +51,10 @@ class ProductViews(APIView):
         # Otherwise, fetch products with optional filters
         products = Products.objects.all()
 
-        # Apply category_id filter if provided
-        if category_id is not None:
-            products = products.filter(category_id=category_id)
-        
-        # Apply org_id filter if provided
-        
-        
-        # Check if any products matched the filters
+        if category_ids is not None:
+            for cat_id in category_ids:
+                products = products.filter(category_id=cat_id)
+
         if not products.exists():
             return Response(
                 {"status": "success", "data": [], "message": "No products found for the given filters"},
@@ -81,7 +63,14 @@ class ProductViews(APIView):
 
         # Serialize and return the list of filtered products
         serializer = ProductSerializer(products, many=True)
-        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "status": "success",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
     # PATCH method to update a product
     # def patch(self, request, id=None, org_id= None):
     #     if not id:

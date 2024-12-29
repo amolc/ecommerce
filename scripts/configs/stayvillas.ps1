@@ -1,4 +1,4 @@
-$env:DJANGO_SETTINGS_MODULE = 'restserver.settings'
+$env:DJANGO_SETTINGS_MODULE = 'restserver.settings.production'
 $env:SERVICE_PORT = '9001'
 $env:MYSQL_USER = 'stockrobot'
 $env:MYSQL_DB = 'ecommerce'

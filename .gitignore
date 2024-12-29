@@ -4,3 +4,4 @@ env/
 myenv/
 .env/
 .venv/
+all_data.json
