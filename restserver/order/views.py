@@ -31,16 +31,13 @@ class OrderViews(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, org_id=None):
-        """Create a new order."""
-        print("Request data:", request.data)  # Print the full request body
+        order_data = request.data
 
         try:
-            # Create a new order using the request data
-            serializer = OrderSerializer(data=request.data)
+            serializer = OrderSerializer(data=order_data)
             if serializer.is_valid():
                 serializer.save()
 
-                # Return the success response with the created order
                 return Response({
                     "status": "success",
                     "data": serializer.data
@@ -57,58 +54,38 @@ class OrderViews(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    def patch(self, request, id=None, org_id=None):
+        if not id:
+            return Response(
+                {'status': 'error', 'message': 'ID is required for update'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-# def patch(self, request, id=None, org_id=None):
-#         """Update an existing order by ID."""
-#         if not id:
-#             return Response(
-    # {'status': 'error', 'message': 'ID is required for update'},
-    # status=status.HTTP_400_BAD_REQUEST)
-#         order = get_object_or_404(Order, id=id)
-#         serializer = OrderSerializer(order, data=request.data, partial=True)
+        order = get_object_or_404(Order, id=id)
 
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(
-    # {"status": "success", "data": serializer.data},
-    # status=status.HTTP_200_OK)
+        serializer = OrderSerializer(order, data=request.data, partial=True)
 
-#         return Response(
-    # serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
 
-def patch(self, request, id=None, org_id=None):
-    if not id:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id=None, org_id=None):
+        """Delete an existing order by ID."""
+        if not id:
+            return Response(
+                {'status': 'error', 'message': 'ID is required for deletion'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        order = get_object_or_404(Order, id=id)
+        order.delete()
+
         return Response(
-            {'status': 'error', 'message': 'ID is required for update'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    order = get_object_or_404(Order, id=id)
-
-    serializer = OrderSerializer(order, data=request.data, partial=True)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(
-            {"status": "success", "data": serializer.data},
+            {"status": "success", "message": "Order deleted successfully"},
             status=status.HTTP_200_OK
         )
-
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-def delete(self, request, id=None, org_id=None):
-    """Delete an existing order by ID."""
-    if not id:
-        return Response(
-            {'status': 'error', 'message': 'ID is required for deletion'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    order = get_object_or_404(Order, id=id)
-    order.delete()
-
-    return Response(
-        {"status": "success", "message": "Order deleted successfully"},
-        status=status.HTTP_200_OK
-    )

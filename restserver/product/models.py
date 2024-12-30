@@ -4,7 +4,7 @@ from subcategories.models import Subcategory
 from datetime import date
 
 
-class Products(models.Model):
+class Product(models.Model):
     id: models.AutoField = models.AutoField(
         primary_key=True
     )

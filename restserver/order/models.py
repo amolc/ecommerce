@@ -11,27 +11,65 @@ class Order(models.Model):
     last_name: models.CharField = models.CharField(
         max_length=50
     )
+    email: models.EmailField = models.EmailField(
+        blank=True,
+        null=True
+    )
+    mobile_number: models.CharField = models.CharField(
+        max_length=15
+    )
+    country: models.CharField = models.CharField(
+        max_length=120
+    )
+    state: models.CharField = models.CharField(
+        max_length=250
+    )
+    city: models.CharField = models.CharField(
+        max_length=120,
+    )
+    postal_code: models.CharField = models.CharField(
+        max_length=10
+    )
     org_id: models.PositiveIntegerField = models.PositiveIntegerField(
         blank=True,
         null=True
     )
     billing_address: models.TextField = models.TextField()
-    shipping_address: models.TextField = models.TextField()
-    order_date: models.DateTimeField = models.DateTimeField(
-        auto_now_add=True
+    shipping_address: models.TextField = models.TextField(
+        blank=True,
+        null=True
     )
 
-    order_status: models.CharField = models.CharField(
+    status: models.CharField = models.CharField(
         max_length=20,
-        default='Pending'
+        default='pending',
+        choices=(
+            ('pending', 'Pending'),
+            ('completed', 'Completed'),
+            ('cancelled', 'Cancelled'),
+        )
     )
-    order_amount: models.DecimalField = models.DecimalField(
+
+    amount: models.DecimalField = models.DecimalField(
         max_digits=10,
         decimal_places=2
     )
-    order_paid_by: models.CharField = models.CharField(
+
+    payment_method: models.CharField = models.CharField(
         max_length=20,
-        default='Credit Card'
+        default='credit_card',
+        choices=(
+            ('credit_card', 'Credit Cart'),
+            ('mobile_money', 'Mobile Money')
+        )
+    )
+
+    created_on: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_on: models.DateTimeField = models.DateTimeField(
+        auto_now=True
     )
 
     def __str__(self):
