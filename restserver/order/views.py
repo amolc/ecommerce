@@ -12,23 +12,30 @@ class OrderViews(APIView):
     def get(self, request, org_id=None, order_id=None):
         if order_id:
             try:
-                print(f"Fetching Order with id: {order_id}")  # Debugging line
-                order = Order.objects.get(order_id=order_id)
+                order = Order.objects.get(id=order_id)
                 serializer = OrderSerializer(order)
-                print(f"Order found: {serializer.data}")  # Debugging line
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(
+                    {
+                        "status": "success",
+                        "data": serializer.data
+                    },
+                    status=status.HTTP_200_OK
+                )
             except Order.DoesNotExist:
-                print(f"Order with id {order_id} not found")  # Debugging line
                 return Response(
                     {"error": "Order not found"},
                     status=status.HTTP_404_NOT_FOUND
                 )
         else:
             orders = Order.objects.all()
-            print(f"Fetched orders: {orders}")  # Debugging line
             serializer = OrderSerializer(orders, many=True)
-            print(f"Serialized orders: {serializer.data}")  # Debugging line
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                {
+                    "status": "success",
+                    "data": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
 
     def post(self, request, org_id=None):
         order_data = request.data
@@ -44,7 +51,7 @@ class OrderViews(APIView):
                 }, status=status.HTTP_201_CREATED)
             else:
                 return Response(
-                    serializer.errors,
+                    {"status": "error", "message": str(serializer.errors)},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 

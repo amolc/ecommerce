@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Order(models.Model):
-    order_id: models.AutoField = models.AutoField(
+    id: models.AutoField = models.AutoField(
         primary_key=True
     )
     first_name: models.CharField = models.CharField(
