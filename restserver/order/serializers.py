@@ -31,17 +31,23 @@ class OrderSerializer(serializers.ModelSerializer):
             'country',
             'state',
             'city',
+            'postal_code',
             'billing_address',
             'shipping_address',
             'amount',
             'order_items',
+            'created_on',
         ]
         read_only_fields = [
             'id',
+            'created_on',
         ]
 
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
+
+        if len(order_items_data == 0):
+            raise Exception("There are no items in this order")
 
         with transaction.atomic():
             order = Order.objects.create(**validated_data)
