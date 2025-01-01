@@ -23,7 +23,7 @@ class OrderItem(models.Model):
         Product,
         on_delete=models.DO_NOTHING,
     )
-
+    product_image: models.TextField = models.TextField()
     product_name: models.CharField = models.CharField(
         max_length=255
     )

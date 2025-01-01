@@ -37,11 +37,21 @@ class OrderSerializer(serializers.ModelSerializer):
             'amount',
             'order_items',
             'created_on',
+            'status',
         ]
         read_only_fields = [
             'id',
             'created_on',
+            'status',
         ]
+        depth = 2
+
+    def __init__(self, *args, **kwargs):
+        super(OrderSerializer, self).__init__(*args, **kwargs)
+
+        request = self.context.get('request')
+        if request and request.method == 'GET':
+            self.fields['order_items'].depth = 2
 
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
