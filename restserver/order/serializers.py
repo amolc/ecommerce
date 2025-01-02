@@ -24,25 +24,42 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = [
             'id',
-            'first_name',
-            'last_name',
             'email',
             'mobile_number',
+            'first_name',
+            'last_name',
+            'billing_address',
+            'billing_address_specifier',
+            'billing_address2',
+            'billing_address2_specifier',
             'country',
             'state',
             'city',
             'postal_code',
-            'billing_address',
+            'shipping_email',
+            'shipping_mobile_number',
+            'shipping_first_name',
+            'shipping_last_name',
             'shipping_address',
+            'shipping_address_specifier',
+            'shipping_address2',
+            'shipping_address2_specifier',
+            'shipping_country',
+            'shipping_state',
+            'shipping_city',
+            'shipping_postal_code',
             'amount',
             'order_items',
             'created_on',
+            'updated_on',
             'status',
+            'status_changes',
         ]
         read_only_fields = [
             'id',
             'created_on',
             'status',
+            'status_changes'
         ]
         depth = 2
 
@@ -56,7 +73,7 @@ class OrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
 
-        if len(order_items_data == 0):
+        if len(order_items_data) == 0:
             raise Exception("There are no items in this order")
 
         with transaction.atomic():
