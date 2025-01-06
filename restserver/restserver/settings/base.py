@@ -41,7 +41,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "*",
     "localhost",
-    "api.sunandsandstays.com",
+    "flipopo.com",
+    "api.flipopo.com",
     "127.0.0.1",
     "*.smartportfolios.co",
     "smartportfolios.ckq0nibpvq6u.us-west-1.rds.amazonaws.com",
@@ -123,16 +124,16 @@ SILENCED_SYSTEM_CHECKS = ["auth.E003"]
 
 # The local configurations are added to file
 # Local setup for if server is not working
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Use PostgreSQL engine  # noqa: E501
-#         'NAME': os.environ.get('POSTGRES_DB', 'postgres'), #check database name  # noqa: E501
-#         'USER': os.environ.get('POSTGRES_USER', 'postgres'),  #default   # noqa: E501
-#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),  # put your password  # noqa: E501
-#         'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),  # Host for local development  # noqa: E501
-#         'PORT': os.environ.get('POSTGRES_PORT', '5432'),  # PostgreSQL default port  # noqa: E501
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Use PostgreSQL engine  # noqa: E501
+        'NAME': os.environ.get('POSTGRES_DB', 'postgres'), #check database name  # noqa: E501
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),  #default   # noqa: E501
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),  # put your password  # noqa: E501
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),  # Host for local development  # noqa: E501
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),  # PostgreSQL default port  # noqa: E501
+    }
+}
 
 
 # Password validation
@@ -191,7 +192,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import sentry_sdk  # noqa: E402
 
 sentry_sdk.init(
-    dsn="https://343f07974b6db30273660bf67a127cb8@o4508080204611584.ingest.us.sentry.io/4508080205987840",  # noqa: E501
+    dsn="https://bdf40524968b9ef5d2f8e61b21050a66@o4505724224077824.ingest.us.sentry.io/4508595203670016", # noqa: E501
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for tracing.
     traces_sample_rate=1.0,
