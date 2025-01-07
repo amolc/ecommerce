@@ -35,45 +35,6 @@ class RegisterAdminViews(APIView):
             return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class AuthenticateAgent(APIView):
-
-#     def post(self, request, *args, **kwargs):
-#         try:
-#             serializer = LoginSerializer(data=request.data, context={'request': request})
-#             if serializer.is_valid():
-#                 user = serializer.validated_data['user']
-#                 user_data = Agent.objects.filter(email=request.data['email']).first()
-
-#                 if not user_data:
-#                     return Response({'status': 'error', 'message': 'Agent not found'}, status=status.HTTP_404_NOT_FOUND)
-
-#                 if not isinstance(user_data, Agent):
-#                     return Response({'status': 'error', 'message': 'Invalid agent instance'}, status=status.HTTP_400_BAD_REQUEST)
-
-#                 token_instance, token = AuthToken.objects.create(user=user_data)
-#                 user_id = user_data.id
-
-#                 data = {
-#                     "status": status.HTTP_200_OK,
-#                     'user_id': user_id,
-#                     'is_super_admin': user_data.is_super_admin,
-#                     'is_admin': user_data.is_admin,
-#                     'is_agent': user_data.is_agent,
-#                     'displayName': user_data.first_name,
-#                     'emailId': user_data.email,
-#                     "message": "Logged-in Successfully",
-#                     "Token": token
-#                 }
-
-#                 return Response({'status': "success", 'data': data})
-
-#             else:
-#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#         except Exception as e:
-#             return StayVillasResponse.exception_error(self.__class__.__name__, request, e)
-
-
 class AdminViews(APIView):
 
     def get(self, request, id=None, org_id=None):
@@ -134,7 +95,7 @@ class LoginViews(APIView):
                     'agent_id': user.id,
                     # Note: Typically you wouldn't return the password
                 }, status=status.HTTP_200_OK)
-            
+
             # User not found or password incorrect
             return Response({
                 'status': 'error',

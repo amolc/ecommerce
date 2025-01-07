@@ -79,7 +79,8 @@ class ProductViews(APIView):
                     "message": "No products found for the given filters",
                     "num_pages": 0,
                     "start_index": 0,
-                    "end_index": 0
+                    "end_index": 0,
+                    "current_page": 0
                 },
                 status=status.HTTP_200_OK
             )
@@ -98,6 +99,8 @@ class ProductViews(APIView):
                 "num_pages": paginator.num_pages,
                 "start_index": products_page.start_index(),
                 "end_index": products_page.end_index(),
+                "current_page": products_page.number,
+                "total_num_items": paginator.object_list.count(),
             },
             status=status.HTTP_200_OK
         )
