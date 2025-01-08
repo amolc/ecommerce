@@ -12,5 +12,4 @@ urlpatterns = [
     path("get-customer/", CustomerViews.as_view()),
     path("update-customer/<int:id>/", CustomerViews.as_view()),
     path("delete-customer/<int:id>/", CustomerViews.as_view()),
-
 ]
