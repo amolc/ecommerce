@@ -64,7 +64,7 @@ class AuthenticateUser(APIView):
             )
             if serializer.is_valid():
                 user_data = Customers.objects.filter(
-                    email=request.data['email']
+                    mobile_number=request.data['mobile_number']
                 ).first()
 
                 if not user_data:
@@ -93,26 +93,23 @@ class AuthenticateUser(APIView):
                 )
                 print("Generated Token:", token)
 
-                user_id = user_data.id  # This is the customer_id
-                # Optional: Update last login if needed (uncomment if required)
-                # Customers.objects.filter(id=user_id).update(lastLogin=datetime.now(timezone.utc))
+                user_id = user_data.id
 
                 is_super_admin = user_data.is_super_admin
                 is_admin = user_data.is_admin
                 is_customer = user_data.is_customer
-                displayName = user_data.first_name
-                email_id = user_data.email
 
-                # Prepare the response data
                 data = {
                     "status": status.HTTP_200_OK,
-                    'user_id': user_id,  # Return user_id (customer_id)
+                    'user_id': user_id,
                     'is_super_admin': is_super_admin,
                     'is_admin': is_admin,
                     'is_customer': is_customer,
-                    'displayName': displayName,
-                    'emailId': email_id,
-                    "message": "Logged-in Successfully",
+                    'first_name': user_data.first_name,
+                    'last_name': user_data.last_name,
+                    'mobile_number': user_data.mobile_number,
+                    'email': user_data.email,
+                    "message": "Logged-in successfully",
                     "Token": token
                 }
 
@@ -148,7 +145,7 @@ class CustomerViews(APIView):
 
             items = Customers.objects.all()
             serializer = CustomerSerializer(items, many=True)
-            
+
             return Response(
                 {
                     "status": "success",

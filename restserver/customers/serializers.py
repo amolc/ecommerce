@@ -50,7 +50,14 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
+    email = serializers.CharField(
+        max_length=255,
+        required=False
+    )
+    mobile_number = serializers.CharField(
+        max_length=255,
+        required=False
+    )
     password = serializers.CharField(
         label=("password"),
         style={'input_type': 'password'},
@@ -65,7 +72,9 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, data):
         email = data.get('email')
+        mobile_number = data.get('mobile_number')
         password = data.get('password')
+
         if email and password:
             if is_email(email):
                 user = EmailBackend.authenticate(
@@ -99,6 +108,31 @@ class LoginSerializer(serializers.Serializer):
                         message,
                         code='authorization'
                     )
+        elif mobile_number and password:
+            try:
+                user = Customers.objects.filter(
+                    mobile_number=mobile_number
+                ).first()
+
+                if not user.check_password(password):
+                    message = {
+                        'incorrectpassword': (
+                            'Entered password '
+                            'was not matching.'
+                        )
+                    }
+
+                    raise serializers.ValidationError(
+                        message,
+                        code='authorization'
+                    )
+
+            except Customers.DoesNotExist:
+                raise serializers.ValidationError(
+                    "There is no user with that phone number.",
+                    code='authorization'
+                )
+
         else:
             message = {
                 'message': 'Must include "Username" and "Password"'
