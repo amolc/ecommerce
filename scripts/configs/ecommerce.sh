@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # exporting env variables to be used with django server
-export DJANGO_SETTINGS_MODULE="restserver.settings"
+export DJANGO_SETTINGS_MODULE="restserver.settings.production"
 export SERVICE_PORT=7777
 export MYSQL_USER="stockrobot"
 export MYSQL_DB="ecommerce"
