@@ -50,6 +50,9 @@ class ProductSubcategory(models.Model):
     class Meta:
         verbose_name_plural = "product_subcategories"
 
+    id: models.AutoField = models.AutoField(
+        primary_key=True,
+    )
     is_active: models.BooleanField = models.BooleanField(
         default=True
     )

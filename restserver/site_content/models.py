@@ -20,11 +20,10 @@ class Banner(models.Model):
         auto_now=True,
     )
 
-    organisation: models.ForeignKey = models.ForeignKey(
+    organisation: models.OneToOneField = models.ForeignKey(
         Organisation,
         on_delete=models.DO_NOTHING,
         related_name="banner",
-        unique=True,
     )
 
     def __str__(self):

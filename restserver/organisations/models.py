@@ -6,7 +6,12 @@ class Organisation(models.Model):
         primary_key=True
     )
     name: models.CharField = models.CharField(
-        max_length=255
+        max_length=255,
+        unique=True,
+    )
+    display_name: models.CharField = models.CharField(
+        max_length=255,
+        unique=True,
     )
     created_at: models.DateTimeField = models.DateTimeField(
         auto_now_add=True

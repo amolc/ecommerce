@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'knox',
 
     'organisations',
+    'site_content',
     'stores',
     'staff',
     'customers',

@@ -37,6 +37,9 @@ class Staff(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
 
+    id: models.AutoField = models.AutoField(
+        primary_key=True,
+    )
     email: models.EmailField = models.EmailField(
         null=True,
         blank=True,
