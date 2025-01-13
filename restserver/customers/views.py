@@ -1,5 +1,8 @@
 from rest_framework.views import (  # type: ignore
-    APIView
+    APIView,
+)
+from rest_framework.viewsets import (  # type: ignore
+    ModelViewSet
 )
 from rest_framework.response import (  # type: ignore
     Response
@@ -10,7 +13,7 @@ from rest_framework import (  # type: ignore
 
 from knox.models import AuthToken  # type: ignore
 
-from common.utils import StayVillasResponse
+from _lib.utils import StayVillasResponse
 
 from .serializers import (
     RegisterCustomerSerializer,
@@ -18,7 +21,7 @@ from .serializers import (
     CustomerSerializer
 )
 
-from .models import Customers
+from .models import Customer
 
 
 class RegisterCustomerViews(APIView):
@@ -26,13 +29,14 @@ class RegisterCustomerViews(APIView):
         request_data = request.data.copy()
         request_data["org_id"] = org_id
 
-        # Use the RegisterCustomerSerializer to handle registration
-        serializer_class = RegisterCustomerSerializer(data=request_data)
+        serializer_class = RegisterCustomerSerializer(
+            data=request_data
+        )
 
         if serializer_class.is_valid():
-            customer = serializer_class.save()
+            customer: Customer = serializer_class.save()
             response_data = serializer_class.data
-            response_data['user_id'] = customer.id
+            response_data['user_id'] = customer.id  # type: ignore
 
             api_response = Response(
                 {
@@ -63,7 +67,7 @@ class AuthenticateUser(APIView):
                 }
             )
             if serializer.is_valid():
-                user_data = Customers.objects.filter(
+                user_data = Customer.objects.filter(
                     mobile_number=request.data['mobile_number']
                 ).first()
 
@@ -79,7 +83,7 @@ class AuthenticateUser(APIView):
                 print("Verified User Data Type:", type(user_data))
 
                 # Confirm the user instance is of the correct model
-                if not isinstance(user_data, Customers):
+                if not isinstance(user_data, Customer):
                     return Response(
                         {
                             'status': 'error',
@@ -93,7 +97,7 @@ class AuthenticateUser(APIView):
                 )
                 print("Generated Token:", token)
 
-                user_id = user_data.id
+                user_id = user_data.id  # type: ignore
 
                 is_super_admin = user_data.is_super_admin
                 is_admin = user_data.is_admin
@@ -136,14 +140,14 @@ class CustomerViews(APIView):
     def get(self, request, id=None, org_id=None):
         try:
             if id:
-                item = Customers.objects.get(id=id)
+                item = Customer.objects.get(id=id)
                 serializer = (item)
                 return Response(
                     {"status": "success", "data": serializer.data},
                     status=status.HTTP_200_OK,
                 )
 
-            items = Customers.objects.all()
+            items = Customer.objects.all()
             serializer = CustomerSerializer(items, many=True)
 
             return Response(
@@ -160,7 +164,6 @@ class CustomerViews(APIView):
                 e
             )
 
-    # Update a customer
     def patch(self, request, id=None, org_id=None):
         request_data = request.data
         request_data["org_id"] = org_id
@@ -173,7 +176,7 @@ class CustomerViews(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-        item = Customers.objects.get(id=id)
+        item = Customer.objects.get(id=id)
         serializer = CustomerSerializer(
             item,
             data=request.data,
@@ -203,7 +206,7 @@ class CustomerViews(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        item = Customers.objects.get(id=id)
+        item = Customer.objects.get(id=id)
         item.delete()
 
         return Response(
@@ -213,3 +216,7 @@ class CustomerViews(APIView):
             },
             status=status.HTTP_204_NO_CONTENT
         )
+
+
+class CustomerViewSet(ModelViewSet):
+    model = Customer

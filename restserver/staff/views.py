@@ -1,57 +1,122 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.views import (  # type: ignore
+    APIView
+)
+from rest_framework.response import (  # type: ignore
+    Response
+)
+from rest_framework import (  # type: ignore
+    status
+)
+
+from _lib.utils import StayVillasResponse
+
+from .serializers import (
+    RegisterStaffSerializer,
+    LoginSerializer,
+    StaffSerializer
+)
+
 from .models import Staff
-from .serializers import StaffSerializer
 
-# List and Create View for Staff
-class StaffListView(APIView):
-    def get(self, request):
-        """Retrieve all staff records."""
-        staff = Staff.objects.all()
-        serializer = StaffSerializer(staff, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        """Create a new staff member."""
-        serializer = StaffSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class RegisterStaffViews(APIView):
+    def post(self, request, org_id=None):
+        print("Registering Agent", request.data)
 
-# Retrieve, Update, and Delete View for a Single Staff
-class StaffDetailView(APIView):
-    def get_object(self, pk):
+        request_data = request.data.copy()
+        request_data["org_id"] = org_id
+
+        serializer_class = RegisterStaffSerializer(data=request_data)
+
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StaffViews(APIView):
+
+    def get(self, request, id=None, org_id=None):
         try:
-            return Staff.objects.get(pk=pk)
-        except Staff.DoesNotExist:
-            return None
+            if id:
+                agent = Staff.objects.get(id=id)
+                serializer = StaffSerializer(agent)
+                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
-    def get(self, request, pk):
-        """Retrieve a single staff member by ID."""
-        staff = self.get_object(pk)
-        if staff is None:
-            return Response({"error": "Staff not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = StaffSerializer(staff)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            agents = Staff.objects.all()
+            serializer = StaffSerializer(agents, many=True)
+            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return StayVillasResponse.exception_error(self.__class__.__name__, request, e)
 
-    def put(self, request, pk):
-        """Update an existing staff member."""
-        staff = self.get_object(pk)
-        if staff is None:
-            return Response({"error": "Staff not found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = StaffSerializer(staff, data=request.data)
+    def patch(self, request, id=None, org_id=None):
+        request_data = request.data
+        request_data["org_id"] = org_id
+
+        if not id:
+            return Response({'status': 'error', 'message': 'ID is required for update'}, status=status.HTTP_400_BAD_REQUEST)
+
+        agent = Staff.objects.get(id=id)
+        serializer = StaffSerializer(agent, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
-        """Delete a staff member."""
-        staff = self.get_object(pk)
-        if staff is None:
-            return Response({"error": "Staff not found"}, status=status.HTTP_404_NOT_FOUND)
-        staff.delete()
-        return Response({"message": "Staff deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, id=None, org_id=None):
+        if not id:
+            return Response({'status': 'error', 'message': 'ID is required for deletion'}, status=status.HTTP_400_BAD_REQUEST)
+
+        agent = Staff.objects.get(id=id)
+        agent.delete()
+        return Response({'status': 'success', 'message': 'Agent deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+class LoginViews(APIView):
+    def post(self, request, id=None, org_id=None):
+        # Pass the request data to the serializer
+        serializer = LoginSerializer(data=request.data)
+
+        # Check if the data is valid
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+
+            # Retrieve the user based on the provided email
+            user = Staff.objects.filter(email=email).first()
+
+            # Check if user exists and password matches
+            if user and user.check_password(password):
+                # Directly return a successful login message with user ID
+                return Response({
+                    'status': 'success',
+                    'message': f'Login successful for {email}',
+                    'email': email,
+                    'agent_id': user.id,
+                    # Note: Typically you wouldn't return the password
+                }, status=status.HTTP_200_OK)
+
+            # User not found or password incorrect
+            return Response({
+                'status': 'error',
+                'message': 'Invalid email or password'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # If the data is not valid, log the errors for debugging
+        print("Serializer errors:", serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AgentFilterViews(APIView):
+
+    def get(self, request, id=None, org_id=None):
+        try:
+            if id:
+                agent = Staff.objects.get(id=id)
+                serializer = StaffSerializer(agent)
+                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+
+            agents = Staff.objects.all()
+            serializer = StaffSerializer(agents, many=True)
+            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return StayVillasResponse.exception_error(self.__class__.__name__, request, e)

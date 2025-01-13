@@ -1,3 +1,19 @@
+from unfold import (
+    admin as unfold_admin,
+)
+
 from django.contrib import admin
 
-# Register your models here.
+from .models import (
+    Staff,
+    StaffLog
+)
+
+
+class StaffLogInline(unfold_admin.TabularInline):
+    model = StaffLog
+
+
+@admin.register
+class StaffAdmin(unfold_admin.ModelAdmin):
+    model = Staff

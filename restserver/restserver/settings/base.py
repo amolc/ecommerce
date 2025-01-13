@@ -10,24 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import sentry_sdk
+
+from dotenv import load_dotenv
 from pathlib import Path
-# import environ
 
-# Initialize environment variables
-# env = environ.Env()
-
-# Take environment variables from .env file
-# environ.Env.read_env()
-
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # type: ignore
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = (
@@ -58,21 +51,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'rest_framework',
     'rest_framework.authtoken',
-    "corsheaders",
+    'corsheaders',
     'knox',
+
+    'organisations',
+    'stores',
+    'staff',
     'customers',
     'categories',
-    'subcategories',
-    'product',
-    'order',
-    'order_items',
-    'admins',
-    'staff',
-    'billing',
+    'products',
+    'orders',
     'inventory',
-    'store',
 ]
 
 MIDDLEWARE = [
@@ -106,34 +98,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'restserver.wsgi.application'
 
-
-AUTH_USER_MODEL = 'customers.Customers'
-
 CORS_ALLOW_ALL_ORIGINS = True
 SILENCED_SYSTEM_CHECKS = ["auth.E003"]
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
-
-# The local configurations are added to file
-# Local setup for if server is not working
+# Base simple database setup. This isn't typically used.
+# Development DB is in: restserver.settings.development
+# Production DB is in: restserver.settings.production
+# Both of those packages override this setting.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Use PostgreSQL engine  # noqa: E501
-        'NAME': os.environ.get('POSTGRES_DB', 'postgres'), #check database name  # noqa: E501
-        'USER': os.environ.get('POSTGRES_USER', 'postgres'),  #default   # noqa: E501
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123456'),  # put your password  # noqa: E501
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),  # Host for local development  # noqa: E501
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),  # PostgreSQL default port  # noqa: E501
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation
@@ -188,8 +169,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import sentry_sdk  # noqa: E402
 
 sentry_sdk.init(
     dsn="https://bdf40524968b9ef5d2f8e61b21050a66@o4505724224077824.ingest.us.sentry.io/4508595203670016", # noqa: E501

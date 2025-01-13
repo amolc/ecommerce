@@ -8,7 +8,7 @@ from django.utils import timezone
 from .models import Inventory
 from .serializers import InventorySerializer
 
-from product.models import (
+from products.models import (
     Product
 )
 
@@ -82,7 +82,7 @@ class InventoryViews(APIView):
 
         # Check if the product has an associated inventory
         try:
-            inventory = product.inventory
+            inventory = product.inventory  # type: ignore (RELATED_MANAGER)
         except Inventory.DoesNotExist:
             return Response({
                 "status": "error",

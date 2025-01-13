@@ -2,11 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
-class CustomUserManager(BaseUserManager):
+class CustomerManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         user = self.model(email=email, **kwargs)
         user.set_password(password)
         user.save(using=self._db)
+        
         return user
 
     def create_superuser(self, email, password=None, **kwargs):
@@ -25,7 +26,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-class Customers(AbstractBaseUser):
+class Customer(AbstractBaseUser):
     org_id: models.PositiveIntegerField = models.PositiveIntegerField(
         null=True,
         blank=True
@@ -66,17 +67,14 @@ class Customers(AbstractBaseUser):
     is_staff: models.BooleanField = models.BooleanField(
         default=False
     )
-
-    objects = CustomUserManager()
+    
+    objects: CustomerManager = CustomerManager()  # type: ignore
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number']
 
-    class Meta:
-        db_table = "Customers"
 
-
-class Logs(models.Model):
+class CustomerLog(models.Model):
     logid: models.BigAutoField = models.BigAutoField(
         primary_key=True,
         editable=False
@@ -89,7 +87,7 @@ class Logs(models.Model):
     )
     log_message: models.TextField = models.TextField()
     user: models.ForeignKey = models.ForeignKey(
-        "Customers",
+        "Customer",
         on_delete=models.RESTRICT,
         null=True,
         blank=True,
@@ -102,8 +100,6 @@ class Logs(models.Model):
         auto_now=True
     )
 
-    class Meta:
-        db_table = "Logs"
-
-        def __str__(self):
-            return self.transaction_name
+    def __str__(self):
+        return self.transaction_name
+    

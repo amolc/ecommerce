@@ -5,10 +5,9 @@ from unfold import (
 from django.contrib import admin
 
 from .models import (
-    Customer
+    Banner
 )
 
-
-@admin.register(Customer)
-class CustomerAdmin(unfold_admin.ModelAdmin):
+@admin.register(Banner)
+class BannerAdmin(unfold_admin.ModelAdmin):
     pass

@@ -2,7 +2,7 @@ from rest_framework import serializers  # type: ignore
 
 # custom
 import re
-from .models import Customers
+from .models import Customer
 
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import get_user_model
@@ -27,7 +27,7 @@ def is_email(email):
 
 class RegisterCustomerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Customers
+        model = Customer
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -37,7 +37,7 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
                 'This field may not be blank',
                 code='authorization'
             )
-        elif Customers.objects.filter(email__iexact=value).exists():
+        elif Customer.objects.filter(email__iexact=value).exists():
             raise serializers.ValidationError(
                 'Entered Email already registered',
                 code='authorization'
@@ -50,14 +50,14 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
                 'This field may not be blank',
                 code='authorization'
             )
-        elif Customers.objects.filter(mobile_number__iexact=value).exists():
+        elif Customer.objects.filter(mobile_number__iexact=value).exists():
             raise serializers.ValidationError(
                 'This field may not be blank',
                 code='authorization'
             )
 
     def create(self, validated_data):
-        user = Customers.objects.create_user(**validated_data)
+        user = Customer.objects.create_user(**validated_data)
         return user
 
 
@@ -79,7 +79,7 @@ class LoginSerializer(serializers.Serializer):
     )
 
     class Meta:
-        model = Customers
+        model = Customer
         fields = '__all__'
 
     def validate(self, data):
@@ -122,7 +122,7 @@ class LoginSerializer(serializers.Serializer):
                     )
         elif mobile_number and password:
             try:
-                user = Customers.objects.filter(
+                user = Customer.objects.filter(
                     mobile_number=mobile_number
                 ).first()
 
@@ -139,12 +139,11 @@ class LoginSerializer(serializers.Serializer):
                         code='authorization'
                     )
 
-            except Customers.DoesNotExist:
+            except Customer.DoesNotExist:
                 raise serializers.ValidationError(
                     "There is no user with that phone number.",
                     code='authorization'
                 )
-
         else:
             message = {
                 'message': 'Must include "Username" and "Password"'
@@ -160,5 +159,5 @@ class LoginSerializer(serializers.Serializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Customers
+        model = Customer
         fields = '__all__'

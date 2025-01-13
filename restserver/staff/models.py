@@ -1,29 +1,106 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-class Staff(models.Model):
-    STATUS_CHOICES = [
-        ('Active', 'Active'),
-        ('Inactive', 'Inactive'),
-        ('Suspended', 'Suspended'),
-    ]
 
-    ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Manager', 'Manager'),
-        ('Support', 'Support'),
-    ]
+class StaffManager(BaseUserManager):
+    def create_user(self, email, password=None, **kwargs):
+        user = self.model(email=email, **kwargs)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-    id = models.AutoField(primary_key=True)  # Auto-incrementing unique staff ID
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, unique=True)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Active')
-    hire_date = models.DateField()
-    salary = models.DecimalField(max_digits=10, decimal_places=2)
-    date_of_joining = models.DateField(auto_now_add=True)
-    last_updated = models.DateTimeField(auto_now=True)
+    def create_superuser(self, email, password=None, **kwargs):
+        kwargs.setdefault('is_super_admin', True)
+        kwargs.setdefault('is_admin', True)
 
+        user = self.create_user(
+            agency_id=1,
+            email=email,
+            password=password,
+            **kwargs
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class Staff(AbstractBaseUser):
+    org_id: models.PositiveIntegerField = models.PositiveIntegerField()
+    email: models.EmailField = models.EmailField(
+        null=True,
+        blank=True
+    )
+    password: models.CharField = models.CharField(
+        max_length=100
+    )
+    first_name: models.CharField = models.CharField(
+        max_length=200
+    )
+    last_name: models.CharField = models.CharField(
+        max_length=200
+    )
+    mobile_number: models.CharField = models.CharField(
+        max_length=15,
+        null=True,
+        blank=True
+    )
+    city: models.CharField = models.CharField(
+        max_length=200
+    )
+    total_sales: models.DecimalField = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    hire_date: models.DateField = models.DateField(
+        null=True,
+        blank=True
+    )
+    is_active: models.BooleanField = models.BooleanField(
+        default=True
+    )
+    is_super_admin: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_admin: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    is_agent: models.BooleanField = models.BooleanField(
+        default=True
+    )
+
+    objects: StaffManager = StaffManager()  # type: ignore
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+
+
+class StaffLog(models.Model):
+    logid: models.BigAutoField = models.BigAutoField(
+        primary_key=True,
+        editable=False
+    )
+    transaction_name: models.CharField = models.CharField(
+        max_length=500
+    )
+    mode: models.CharField = models.CharField(
+        max_length=100
+    )
+    log_message: models.TextField = models.TextField()
+    admin: models.ForeignKey = models.ForeignKey(
+        "Staff",
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="log_admin_id",
+    )
+    is_app: models.BooleanField = models.BooleanField(
+        default=False
+    )
+    log_date: models.DateTimeField = models.DateTimeField(
+        auto_now=True
+    )
     def __str__(self):
-        return f"{self.staff_id} - {self.first_name} {self.last_name} - {self.role}"
+        return self.transaction_name

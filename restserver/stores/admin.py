@@ -1,14 +1,13 @@
 from unfold import (
     admin as unfold_admin
 )
-
 from django.contrib import admin
 
 from .models import (
-    Customer
+    Store
 )
 
 
-@admin.register(Customer)
-class CustomerAdmin(unfold_admin.ModelAdmin):
+@admin.register(Store)
+class StoreAdmin(unfold_admin.ModelAdmin):
     pass
