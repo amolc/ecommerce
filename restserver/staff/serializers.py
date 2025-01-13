@@ -1,31 +1,7 @@
-import re
 from rest_framework import (  # type: ignore
     serializers
 )
 from .models import Staff
-from django.contrib.auth.backends import (
-    BaseBackend
-)
-from django.contrib.auth import (
-    get_user_model
-)
-
-
-class EmailBackend(BaseBackend):
-    def authenticate(self, request, email=None, password=None, **kwargs):
-        UserModel = get_user_model()
-        try:
-            user = UserModel.objects.get(email=email)
-            if user.check_password(password):
-                return user
-        except UserModel.DoesNotExist:
-            return None
-
-# Email validation function
-def is_email(email):
-    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    match = re.match(pattern, email)
-    return match is not None
 
 
 class RegisterStaffSerializer(serializers.ModelSerializer):
@@ -36,9 +12,15 @@ class RegisterStaffSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         if not value:
-            raise serializers.ValidationError('This field may not be blank', code='authorization')
+            raise serializers.ValidationError(
+                'This field may not be blank',
+                code='authorization'
+            )
         elif Staff.objects.filter(email__iexact=value).exists():
-            raise serializers.ValidationError('Entered Email already registered', code='authorization')
+            raise serializers.ValidationError(
+                'Entered Email already registered',
+                code='authorization'
+            )
         return value
     
     def create(self, validated_data):
@@ -48,7 +30,11 @@ class RegisterStaffSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField(write_only=True, style={'input_type': 'password'}, trim_whitespace=False)
+    password = serializers.CharField(
+        write_only=True,
+        style={'input_type': 'password'},
+        trim_whitespace=False
+    )
 
     def validate(self, data):
         email = data.get('email')

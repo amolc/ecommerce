@@ -25,7 +25,6 @@ class ProductSubcategorySerializer(serializers.ModelSerializer):
             'subcategory_name',
             'category_name',
             'subcategory_description',
-            'org_id',
             'category',
             'created_at',
             'updated_at',

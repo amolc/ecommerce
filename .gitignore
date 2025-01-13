@@ -4,4 +4,6 @@ env/
 myenv/
 .env/
 .venv/
+
 all_data.json
+data_fixtures.json
