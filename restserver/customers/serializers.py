@@ -44,6 +44,18 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
             )
         return value
 
+    def validate_mobile_number(self, value):
+        if not value:
+            raise serializers.ValidationError(
+                'This field may not be blank',
+                code='authorization'
+            )
+        elif Customers.objects.filter(mobile_number__iexact=value).exists():
+            raise serializers.ValidationError(
+                'This field may not be blank',
+                code='authorization'
+            )
+
     def create(self, validated_data):
         user = Customers.objects.create_user(**validated_data)
         return user
