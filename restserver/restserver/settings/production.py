@@ -1,6 +1,8 @@
 import os
 from .base import *  # noqa: F403 F401
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
