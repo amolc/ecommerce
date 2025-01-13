@@ -8,6 +8,7 @@ from .models import (
     Banner
 )
 
+
 @admin.register(Banner)
 class BannerAdmin(unfold_admin.ModelAdmin):
     pass

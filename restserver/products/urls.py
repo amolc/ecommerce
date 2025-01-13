@@ -1,10 +1,26 @@
 from django.urls import path
-from .views import ProductViews
+from .views import (
+    ProductAPIViews,
+    ProductCategoryAPIViews,
+    ProductSubcategoryAPIViews,
+)
 
 urlpatterns = [
-    path('products/', ProductViews.as_view()),  # List and create products
-    path('create-products/', ProductViews.as_view()),  # Create a new product
-    path('get-product/<int:id>/', ProductViews.as_view()),  # Retrieve, update, and delete product by ID
-    path('update-products/<int:id>/', ProductViews.as_view()),  # Delete a specific product
-    path('delete-products/<int:id>/', ProductViews.as_view()),  # Delete a specific product
+    path('products/', ProductAPIViews.as_view()),
+    path('create-products/', ProductAPIViews.as_view()),
+    path('get-product/<int:id>/', ProductAPIViews.as_view()),
+    path('update-products/<int:id>/', ProductAPIViews.as_view()),
+    path('delete-products/<int:id>/', ProductAPIViews.as_view()),
+    
+    path('category/', ProductCategoryAPIViews.as_view()),  
+    path('create-category/', ProductCategoryAPIViews.as_view()), 
+    path('get-category/<int:category_id>/', ProductCategoryAPIViews.as_view()),  
+    path('update-category/<int:category_id>/', ProductCategoryAPIViews.as_view()),  
+    path('delete-category/<int:category_id>/', ProductCategoryAPIViews.as_view()),  
+
+    path('subcategory/', ProductSubcategoryAPIViews.as_view()),
+    path('create-subcategory/', ProductSubcategoryAPIViews.as_view()),
+    path('get-subcategory/<int:category_id>/', ProductSubcategoryAPIViews.as_view()),
+    path('update-subcategory/<int:id>/', ProductSubcategoryAPIViews.as_view()),
+    path('delete-subcategory/<int:id>/', ProductSubcategoryAPIViews.as_view()),
 ]

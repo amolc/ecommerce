@@ -1,5 +1,9 @@
 from django.db import models
 
+from organisations.models import (
+    Organisation
+)
+
 
 class Banner(models.Model):
     background_image: models.ImageField = models.ImageField()
@@ -8,6 +12,19 @@ class Banner(models.Model):
     )
     subtitle: models.CharField = models.CharField(
         max_length=255
+    )
+    created_at: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated_at: models.DateTimeField = models.DateTimeField(
+        auto_now=True,
+    )
+
+    organisation: models.ForeignKey = models.ForeignKey(
+        Organisation,
+        on_delete=models.DO_NOTHING,
+        related_name="banner",
+        unique=True,
     )
 
     def __str__(self):

@@ -1,5 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager
+)
+
+from organisations.models import (
+    Organisation
+)
 
 
 class StaffManager(BaseUserManager):
@@ -26,10 +33,13 @@ class StaffManager(BaseUserManager):
 
 
 class Staff(AbstractBaseUser):
-    org_id: models.PositiveIntegerField = models.PositiveIntegerField()
+    objects: StaffManager = StaffManager()  # type: ignore
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+
     email: models.EmailField = models.EmailField(
         null=True,
-        blank=True
+        blank=True,
     )
     password: models.CharField = models.CharField(
         max_length=100
@@ -70,11 +80,18 @@ class Staff(AbstractBaseUser):
     is_agent: models.BooleanField = models.BooleanField(
         default=True
     )
+    created_at: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated_at: models.DateTimeField = models.DateTimeField(
+        auto_now=True,
+    )
 
-    objects: StaffManager = StaffManager()  # type: ignore
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+    organisation: models.ForeignKey = models.ForeignKey(
+        Organisation,
+        on_delete=models.DO_NOTHING,
+        related_name="staff",
+    )
 
 
 class StaffLog(models.Model):
@@ -102,5 +119,6 @@ class StaffLog(models.Model):
     log_date: models.DateTimeField = models.DateTimeField(
         auto_now=True
     )
+
     def __str__(self):
         return self.transaction_name

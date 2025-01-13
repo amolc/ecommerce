@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'stores',
     'staff',
     'customers',
-    'categories',
     'products',
     'orders',
     'inventory',

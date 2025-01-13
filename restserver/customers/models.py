@@ -1,5 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager
+)
+
+from organisations.models import (
+    Organisation
+)
 
 
 class CustomerManager(BaseUserManager):
@@ -27,9 +34,12 @@ class CustomerManager(BaseUserManager):
 
 
 class Customer(AbstractBaseUser):
-    org_id: models.PositiveIntegerField = models.PositiveIntegerField(
-        null=True,
-        blank=True
+    objects: CustomerManager = CustomerManager()  # type: ignore
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number']
+
+    id: models.AutoField = models.AutoField(
+        primary_key=True,
     )
     email: models.EmailField = models.EmailField(
         null=True,
@@ -67,17 +77,28 @@ class Customer(AbstractBaseUser):
     is_staff: models.BooleanField = models.BooleanField(
         default=False
     )
-    
-    objects: CustomerManager = CustomerManager()  # type: ignore
+    created_at: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True
+    )
+    updated_at: models.DateTimeField = models.DateTimeField(
+        auto_now=True
+    )
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number']
+    organisation: models.ForeignKey = models.ForeignKey(
+        Organisation,
+        on_delete=models.DO_NOTHING,
+        related_name="customers",
+    )
+    
+    def __str__(self):
+        return (
+            f"{self.first_name} {self.last_name}"
+        )
 
 
 class CustomerLog(models.Model):
-    logid: models.BigAutoField = models.BigAutoField(
+    id: models.BigAutoField = models.BigAutoField(
         primary_key=True,
-        editable=False
     )
     transaction_name: models.CharField = models.CharField(
         max_length=500

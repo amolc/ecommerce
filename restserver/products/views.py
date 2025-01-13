@@ -1,25 +1,37 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import (
+    get_object_or_404
+)
 from django.core.paginator import (
     Paginator
 )
+from django.db.utils import (
+    IntegrityError
+)
+
 
 from rest_framework.views import APIView  # type: ignore
 from rest_framework.response import Response  # type: ignore
 from rest_framework import status  # type: ignore
 
-from categories.models import Category
-from categories.serializers import CategorySerializer
+from .models import (
+    Product,
+    ProductCategory,
+    ProductSubcategory
+)
 
-from .models import Product
-from .serializers import ProductSerializer
+from .serializers import (
+    ProductSerializer,
+    ProductCategorySerializer,
+    ProductSubcategorySerializer,    
+)
 
 
-class ProductViews(APIView):
+class ProductAPIViews(APIView):
     def post(self, request, org_id=None):
         data = request.data
         categoryid = data['category']
-        category_object = Category.objects.get(id=categoryid)
-        serializer = CategorySerializer(category_object)
+        category_object = ProductCategory.objects.get(id=categoryid)
+        serializer = ProductCategorySerializer(category_object)
 
         try:
             serializer = ProductSerializer(data=request.data)
@@ -149,3 +161,171 @@ class ProductViews(APIView):
                 {"error": "Category not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+
+class ProductCategoryAPIViews(APIView):
+    def get(self, request, org_id=None, category_id=None):
+        if category_id:
+            try:
+                category = ProductCategory.objects.get(id=category_id)
+                serializer = ProductCategorySerializer(category)
+                
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except ProductCategory.DoesNotExist:
+                print(f"Category with id {category_id} not found")
+                return Response(
+                    {"error": "Category not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        else:
+            categories = ProductCategory.objects.all()
+
+            show_inactive = request.GET.get('show_inactive')
+
+            if show_inactive:
+                pass
+            else:
+                categories = categories.filter(
+                    is_active=True
+                )
+
+            serializer = ProductCategorySerializer(
+                categories,
+                many=True
+            )
+
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK
+            )
+
+    def post(self, request, org_id, *args, **kwargs):
+        serializer = ProductCategorySerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, org_id, category_id, *args, **kwargs):
+        try:
+            category = ProductCategory.objects.get(id=category_id)
+        except ProductCategory.DoesNotExist:
+            return Response(
+                {"error": "Category not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = ProductCategorySerializer(
+            category,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, org_id, category_id):
+        try:
+            category = ProductCategory.objects.get(id=category_id)
+            category.delete()
+            return Response(
+                {"message": "Category deleted successfully"},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except ProductCategory.DoesNotExist:
+            return Response(
+                {"error": "Category not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except IntegrityError as ex:
+            print(ex)
+            return Response(
+                {"error": (
+                    "Category cannot be deleted because foreign tables "
+                    "reference it as a foreign key."
+                )},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class ProductSubcategoryAPIViews(APIView):
+    def post(self, request, org_id):
+        category_id = request.data.get('category_id')
+        
+        if not category_id:
+            return Response(
+                {"status": "error", "message": "Category ID is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        category = get_object_or_404(ProductCategory, id=category_id)
+
+        request_data = request.data.copy()
+        request_data['category'] = category.id
+        request_data['org_id'] = org_id
+
+        # Try for error. TODO: Fix
+        ProductCategory.objects.get(id=category.id)
+
+        serializer = ProductSubcategorySerializer(data=request_data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, id=None, org_id=None, category_id=None):
+        subcategories = ProductSubcategory.objects.all()  # Default query
+
+        if category_id:
+            subcategories = subcategories.filter(category_id=category_id)
+
+        serializer = ProductSubcategorySerializer(subcategories, many=True)
+        return Response(
+            {"status": "success", "data": serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    def patch(self, request, id=None, org_id=None, category_id=None):
+        if not id:
+            return Response(
+                {'status': 'error', 'message': 'ID is required for update'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        subcategory = get_object_or_404(ProductSubcategory, id=id)
+        serializer = ProductSubcategorySerializer(
+            subcategory,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    def delete(self, request, id=None, org_id=None, category_id=None):
+        if not id:
+            return Response(
+                {'status': 'error', 'message': 'ID is required for deletion'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        subcategory = get_object_or_404(ProductSubcategory, id=id)
+        subcategory.delete()
+
+        return Response(
+            {"status": "success", "message": "Subcategory deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT
+        )

@@ -2,12 +2,14 @@ from django.db import models
 from products.models import Product
 from django.utils import timezone
 
+from organisations.models import (
+    Organisation
+)
+
 
 class Inventory(models.Model):
-    product: models.OneToOneField = models.OneToOneField(
-        Product,
-        on_delete=models.CASCADE,
-        related_name='inventory'
+    id: models.AutoField = models.AutoField(
+        primary_key=True,
     )
     stock_quantity: models.PositiveIntegerField = models.PositiveIntegerField(
         default=0
@@ -28,6 +30,24 @@ class Inventory(models.Model):
         null=True
     )
 
+    product: models.OneToOneField = models.OneToOneField(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='inventory'
+    )
+    created_at: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True
+    )
+    updated_at: models.DateTimeField = models.DateTimeField(
+        auto_now=True
+    )
+
+    organisation: models.ForeignKey = models.ForeignKey(
+        Organisation,
+        on_delete=models.DO_NOTHING,
+        related_name="organisation",
+    )
+  
     def __str__(self):
         return f"Inventory for {self.product.product_name}"
 

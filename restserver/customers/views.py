@@ -36,7 +36,7 @@ class RegisterCustomerViews(APIView):
         if serializer_class.is_valid():
             customer: Customer = serializer_class.save()
             response_data = serializer_class.data
-            response_data['user_id'] = customer.id  # type: ignore
+            response_data['user_id'] = customer.id
 
             api_response = Response(
                 {
@@ -97,7 +97,7 @@ class AuthenticateUser(APIView):
                 )
                 print("Generated Token:", token)
 
-                user_id = user_data.id  # type: ignore
+                user_id = user_data.id
 
                 is_super_admin = user_data.is_super_admin
                 is_admin = user_data.is_admin

@@ -4,6 +4,11 @@ from django.db import (
 from django.core.exceptions import (
     ValidationError
 )
+
+from organisations.models import (
+    Organisation
+)
+
 from products.models import (
     Product
 )
@@ -20,12 +25,9 @@ class Order(models.Model):
         ('confirmed', 'Confirmed'),
         ('cancelled', 'Cancelled'),
     )
+
     id: models.AutoField = models.AutoField(
         primary_key=True
-    )
-    org_id: models.PositiveIntegerField = models.PositiveIntegerField(
-        blank=True,
-        null=True
     )
     email: models.EmailField = models.EmailField(
         blank=True,
@@ -124,12 +126,19 @@ class Order(models.Model):
         choices=PAYMENT_STATUS_CHOICES,
         default='pending',
     )
-    created_on: models.DateTimeField = models.DateTimeField(
+    created_at: models.DateTimeField = models.DateTimeField(
         auto_now_add=True
     )
-    updated_on: models.DateTimeField = models.DateTimeField(
+    updated_at: models.DateTimeField = models.DateTimeField(
         auto_now=True
     )
+
+    organisation: models.ForeignKey = models.ForeignKey(
+        Organisation,
+        on_delete=models.DO_NOTHING,
+        related_name="orders"
+    )
+
     def save(self, *args, **kwargs):
         if self.pk:
             original_order = Order.objects.get(
@@ -165,10 +174,8 @@ class Order(models.Model):
 
 
 class OrderPaymentStatusChange(models.Model):
-    order: models.ForeignKey = models.ForeignKey(
-        "orders.order",
-        on_delete=models.CASCADE,
-        related_name='payment_status_changes'
+    id: models.AutoField = models.AutoField(
+        primary_key=True,
     )
     status_from: models.CharField = models.CharField(
         max_length=255,
@@ -184,6 +191,13 @@ class OrderPaymentStatusChange(models.Model):
     updated_on: models.DateTimeField = models.DateTimeField(
         auto_now=True
     )
+
+    order: models.ForeignKey = models.ForeignKey(
+        "orders.order",
+        on_delete=models.CASCADE,
+        related_name='payment_status_changes'
+    )
+
     def __str__(self):
         return (
             f"Status changed from: {self.status_from} "
@@ -193,10 +207,8 @@ class OrderPaymentStatusChange(models.Model):
 
 
 class OrderStatusChange(models.Model):
-    order: models.ForeignKey = models.ForeignKey(
-        Order,
-        on_delete=models.DO_NOTHING,
-        related_name='status_changes'
+    id: models.AutoField = models.AutoField(
+        primary_key=True,
     )
     status_from: models.CharField = models.CharField(
         max_length=255,
@@ -211,6 +223,12 @@ class OrderStatusChange(models.Model):
     )
     updated_on: models.DateTimeField = models.DateTimeField(
         auto_now=True
+    )
+
+    order: models.ForeignKey = models.ForeignKey(
+        Order,
+        on_delete=models.DO_NOTHING,
+        related_name='status_changes'
     )
 
     def __str__(self):
@@ -228,11 +246,6 @@ class OrderItem(models.Model):
     org_id: models.PositiveIntegerField = models.PositiveIntegerField(
         blank=True,
         null=True
-    )
-    order: models.ForeignKey = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
-        related_name='order_items',
     )
     product: models.ForeignKey = models.ForeignKey(
         Product,
@@ -254,6 +267,12 @@ class OrderItem(models.Model):
     product_subtotal: models.DecimalField = models.DecimalField(
         max_digits=10,
         decimal_places=2
+    )
+
+    order: models.ForeignKey = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='order_items',
     )
 
     def __str__(self):
