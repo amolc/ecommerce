@@ -20,6 +20,12 @@
 		},
 		{
 			"path": "../simpleincome"
+		},
+		{
+			"path": "../quantstrategy"
+		},
+		{
+			"path": "../quantcode"
 		}
 	],
 	"settings": {}
