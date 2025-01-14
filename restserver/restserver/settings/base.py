@@ -45,16 +45,18 @@ ALLOWED_HOSTS = [
 
 # Application definition
 INSTALLED_APPS = [
+    'corsheaders',
+    
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    'rest_framework',
-    'rest_framework.authtoken',
-    'corsheaders',
+
     'knox',
 
     'organisations',
@@ -169,6 +171,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'customers.Customer'
 
 sentry_sdk.init(
     dsn="https://bdf40524968b9ef5d2f8e61b21050a66@o4505724224077824.ingest.us.sentry.io/4508595203670016", # noqa: E501

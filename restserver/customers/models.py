@@ -35,8 +35,8 @@ class CustomerManager(BaseUserManager):
 
 class Customer(AbstractBaseUser):
     objects: CustomerManager = CustomerManager()  # type: ignore
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number']
+    USERNAME_FIELD = 'mobile_number'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     id: models.AutoField = models.AutoField(
         primary_key=True,
@@ -59,8 +59,7 @@ class Customer(AbstractBaseUser):
     )
     mobile_number: models.CharField = models.CharField(
         max_length=15,
-        null=True,
-        blank=True
+        unique=True,
     )
     is_active: models.BooleanField = models.BooleanField(
         default=True

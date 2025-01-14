@@ -31,19 +31,6 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
 
-    def validate_email(self, value):
-        if not value:
-            raise serializers.ValidationError(
-                'This field may not be blank',
-                code='authorization'
-            )
-        elif Customer.objects.filter(email__iexact=value).exists():
-            raise serializers.ValidationError(
-                'Entered Email already registered',
-                code='authorization'
-            )
-        return value
-
     def validate_mobile_number(self, value):
         if not value:
             raise serializers.ValidationError(
@@ -52,9 +39,11 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
             )
         elif Customer.objects.filter(mobile_number__iexact=value).exists():
             raise serializers.ValidationError(
-                'This field may not be blank',
+                'There is already a customer with that number.',
                 code='authorization'
             )
+        
+        return value
 
     def create(self, validated_data):
         user = Customer.objects.create_user(**validated_data)
@@ -160,4 +149,4 @@ class LoginSerializer(serializers.Serializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = '__all__'
+        exclude = [ 'password' ]

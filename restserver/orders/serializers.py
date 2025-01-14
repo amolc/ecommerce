@@ -58,8 +58,8 @@ class OrderSerializer(serializers.ModelSerializer):
             'shipping_postal_code',
             'amount',
             'order_items',
-            'created_on',
-            'updated_on',
+            'created_at',
+            'updated_at',
             'status',
             'status_changes',
         ]

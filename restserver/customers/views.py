@@ -105,6 +105,7 @@ class AuthenticateUser(APIView):
 
                 data = {
                     "status": status.HTTP_200_OK,
+                    'user_data': CustomerSerializer(user_data).data,
                     'user_id': user_id,
                     'is_super_admin': is_super_admin,
                     'is_admin': is_admin,

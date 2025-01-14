@@ -9,7 +9,6 @@ def trigger_error(request):
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path("<int:org_id>/api/stores/", include('stores.urls')),
     path("<int:org_id>/api/staff/", include('staff.urls')),
     path("<int:org_id>/api/customers/", include('customers.urls')),
@@ -17,6 +16,7 @@ urlpatterns = [
     path("<int:org_id>/api/orders/", include('orders.urls')),
     path('<int:org_id>/api/inventory/', include('inventory.urls')),
 
+    path('admin/', admin.site.urls),
     path('sentry-debug/', trigger_error),
 ] + static(
     settings.MEDIA_URL,
