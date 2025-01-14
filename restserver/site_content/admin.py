@@ -1,6 +1,6 @@
-from unfold import (
-    admin as unfold_admin
-)
+# from unfold import (
+#     admin as unfold_admin
+# )
 
 from django.contrib import admin
 
@@ -9,6 +9,6 @@ from .models import (
 )
 
 
-@admin.register(Banner)
-class BannerAdmin(unfold_admin.ModelAdmin):
-    pass
+# @admin.register(Banner)
+# class BannerAdmin(unfold_admin.ModelAdmin):
+#     pass
