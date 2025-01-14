@@ -4,6 +4,14 @@ from django.db import (
     transaction
 )
 
+from organisations.models import (
+    Organisation
+)
+
+from customers.models import (
+    Customer
+)
+
 from .models import (
     Order,
     OrderItem
@@ -26,6 +34,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(
         many=True
+    )
+    customer = serializers.PrimaryKeyRelatedField(
+        queryset=Customer.objects.all()
+    )
+    organisation = serializers.PrimaryKeyRelatedField(
+        queryset=Organisation.objects.all()
     )
 
     class Meta:
@@ -62,10 +76,13 @@ class OrderSerializer(serializers.ModelSerializer):
             'updated_at',
             'status',
             'status_changes',
+            'customer',
+            'organisation',
         ]
         read_only_fields = [
             'id',
-            'created_on',
+            'created_at',
+            'updated_at',
             'status',
             'status_changes'
         ]

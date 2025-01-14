@@ -10,6 +10,10 @@ from customers.models import (
     Customer
 )
 
+from organisations.models import (
+    Organisation
+)
+
 from .models import (
     Order,
     OrderItem
@@ -116,6 +120,17 @@ class OrderViews(APIView):
 
     def post(self, request, org_id=None):
         order_data = request.data
+        
+        customer = Customer.objects.get(
+            id=request.data.get('customer')
+        )
+        
+        organisation = Organisation.objects.get(
+            id=request.data.get('organisation')
+        )
+
+        #order_data['customer'] = customer
+        #order_data['organisation'] = organisation
 
         try:
             serializer = OrderSerializer(data=order_data)
