@@ -90,6 +90,9 @@ class ProductSubcategory(models.Model):
 
 
 class Product(models.Model):
+    class Meta:
+        ordering = [ '-created_at' ]
+
     id: models.AutoField = models.AutoField(
         primary_key=True
     )

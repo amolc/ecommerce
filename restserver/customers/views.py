@@ -103,9 +103,10 @@ class AuthenticateUser(APIView):
                 is_admin = user_data.is_admin
                 is_customer = user_data.is_customer
 
+                user = CustomerSerializer(user_data).data
                 data = {
                     "status": status.HTTP_200_OK,
-                    'user_data': CustomerSerializer(user_data).data,
+                    'user': user,
                     'user_id': user_id,
                     'is_super_admin': is_super_admin,
                     'is_admin': is_admin,
@@ -118,7 +119,10 @@ class AuthenticateUser(APIView):
                     "Token": token
                 }
 
-                return Response({'status': "success", 'data': data})
+                return Response(
+                    {'status': "success", 'data': data},
+                    status=status.HTTP_200_OK,
+                )
 
             else:
                 return Response(

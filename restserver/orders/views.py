@@ -6,6 +6,10 @@ from rest_framework import status  # type: ignore
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
+from customers.models import (
+    Customer
+)
+
 from .models import (
     Order,
     OrderItem
@@ -64,6 +68,8 @@ def change_order_status(request, org_id, order_id):
 
 class OrderViews(APIView):
     def get(self, request, org_id=None, order_id=None):
+        customer_id = request.query_params.get('customer_id')
+
         if order_id:
             try:
                 order = Order.objects.get(id=order_id)
@@ -83,6 +89,20 @@ class OrderViews(APIView):
                     },
                     status=status.HTTP_404_NOT_FOUND
                 )
+        elif customer_id:
+            customer = Customer.objects.get(id=customer_id)
+            orders = Order.objects.filter(
+                customer=customer
+            )
+            serializer = OrderSerializer(orders, many=True)
+            
+            return Response(
+                {
+                    "status": "success",
+                    "data": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
         else:
             orders = Order.objects.all()
             serializer = OrderSerializer(orders, many=True)

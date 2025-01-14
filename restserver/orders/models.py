@@ -13,6 +13,10 @@ from products.models import (
     Product
 )
 
+from customers.models import (
+    Customer
+)
+
 
 class Order(models.Model):
     STATUS_CHOICES = (
@@ -135,6 +139,11 @@ class Order(models.Model):
 
     organisation: models.ForeignKey = models.ForeignKey(
         Organisation,
+        on_delete=models.DO_NOTHING,
+        related_name="orders"
+    )
+    customer: models.ForeignKey = models.ForeignKey(
+        Customer,
         on_delete=models.DO_NOTHING,
         related_name="orders"
     )
