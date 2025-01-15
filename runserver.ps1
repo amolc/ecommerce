@@ -1,5 +1,5 @@
 .\env\Scripts\activate
-.\scripts\configs\stayvillas.ps1
+.\scripts\configs\ecommerce.ps1
 
 pip install -r requirements.txt
 Set-Location restserver
