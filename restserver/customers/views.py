@@ -1,3 +1,4 @@
+
 from rest_framework.views import (  # type: ignore
     APIView,
 )
@@ -23,6 +24,10 @@ from .serializers import (
 
 from .models import Customer
 
+from .utils import (
+    send_sms
+)
+
 
 class RegisterCustomerViews(APIView):
     def post(self, request, org_id=None):
@@ -38,6 +43,10 @@ class RegisterCustomerViews(APIView):
             response_data = serializer_class.data
             response_data['user_id'] = customer.id
 
+            send_sms(
+                customer.mobile_number,
+                body="1111"
+            )
             api_response = Response(
                 {
                     "status": "success",
@@ -221,7 +230,7 @@ class CustomerViews(APIView):
             },
             status=status.HTTP_204_NO_CONTENT
         )
-
-
+    
+    
 class CustomerViewSet(ModelViewSet):
     model = Customer
