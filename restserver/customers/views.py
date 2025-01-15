@@ -146,7 +146,7 @@ class CustomerViews(APIView):
         try:
             if id:
                 item = Customer.objects.get(id=id)
-                serializer = (item)
+                serializer = CustomerSerializer(item)
                 return Response(
                     {"status": "success", "data": serializer.data},
                     status=status.HTTP_200_OK,
