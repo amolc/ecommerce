@@ -42,6 +42,8 @@ class RegisterCustomerViews(APIView):
             customer: Customer = serializer_class.save()
             response_data = serializer_class.data
             response_data['user_id'] = customer.id
+            
+            user = CustomerSerializer(customer).data
 
             send_sms(
                 customer.mobile_number,
@@ -50,7 +52,9 @@ class RegisterCustomerViews(APIView):
             api_response = Response(
                 {
                     "status": "success",
-                    "data": response_data,
+                    "data": {
+                        "user": user
+                    },
                 },
                 status=status.HTTP_201_CREATED
             )
