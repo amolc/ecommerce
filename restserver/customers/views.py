@@ -122,7 +122,7 @@ class AuthenticateUser(APIView):
                     'mobile_number': user_data.mobile_number,
                     'email': user_data.email,
                     "message": "Logged-in successfully",
-                    "Token": token
+
                 }
 
                 return Response(
