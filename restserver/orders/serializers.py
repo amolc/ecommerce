@@ -109,6 +109,25 @@ class OrderSerializer(serializers.ModelSerializer):
                     order=order,
                     **item_data
                 )
+                
+            customer = validated_data['customer'] 
+ 
+            if 'billing_address' in validated_data:
+                customer.billing_address = validated_data['billing_address']
+            if 'billing_address_specifier' in validated_data:
+                customer.billing_address_specifier = validated_data['billing_address_specifier']
+            if 'billing_address2' in validated_data:
+                customer.billing_address2 = validated_data['billing_address2']
+            if 'billing_address2_specifier' in validated_data:
+                customer.billing_address2_specifier = validated_data['billing_address2_specifier']
+            if 'country' in validated_data:
+                customer.country = validated_data['country']
+            if 'city' in validated_data:
+                customer.city = validated_data['city']
+            if 'postal_code' in validated_data:
+                customer.postal_code = validated_data['postal_code']
+
+            customer.save()
 
         return order
 

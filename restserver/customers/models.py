@@ -61,6 +61,42 @@ class Customer(AbstractBaseUser):
         max_length=15,
         unique=True,
     )
+    billing_address: models.TextField = models.TextField(
+        null=True,
+        blank=True,
+    )
+    billing_address_specifier: models.TextField = models.TextField(
+        blank=True,
+        null=True
+    )
+    billing_address2: models.TextField = models.TextField(
+        blank=True,
+        null=True
+    )
+    billing_address2_specifier: models.TextField = models.TextField(
+        blank=True,
+        null=True
+    )
+    country: models.CharField = models.CharField(
+        max_length=120,
+        null=True,
+        blank=True,
+    )
+    state: models.CharField = models.CharField(
+        max_length=250,
+        null=True,
+        blank=True,
+    )
+    city: models.CharField = models.CharField(
+        max_length=120,
+        null=True,
+        blank=True,
+    )
+    postal_code: models.CharField = models.CharField(
+        max_length=10,
+        null=True,
+        blank=True,
+    )
     is_active: models.BooleanField = models.BooleanField(
         default=True
     )
