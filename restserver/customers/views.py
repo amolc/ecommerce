@@ -12,8 +12,6 @@ from rest_framework import (  # type: ignore
     status
 )
 
-from knox.models import AuthToken  # type: ignore
-
 from _lib.utils import StayVillasResponse
 
 from .serializers import (
@@ -104,11 +102,6 @@ class AuthenticateUser(APIView):
                         },
                         status=status.HTTP_400_BAD_REQUEST
                     )
-
-                token_instance, token = AuthToken.objects.create(
-                    user=user_data
-                )
-                print("Generated Token:", token)
 
                 user_id = user_data.id
 
