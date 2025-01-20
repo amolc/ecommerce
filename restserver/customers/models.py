@@ -1,3 +1,7 @@
+from typing import (
+    Any,
+)
+
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -10,8 +14,8 @@ from organisations.models import (
 
 
 class CustomerManager(BaseUserManager):
-    def create_user(self, email, password=None, **kwargs):
-        user = self.model(email=email, **kwargs)
+    def create_user(self, mobile_number: str, password: str|None=None, **kwargs: Any):
+        user = self.model(mobile_number=mobile_number, **kwargs)
         user.set_password(password)
         user.save(using=self._db)
         
