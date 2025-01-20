@@ -43,19 +43,25 @@ class Customer(AbstractBaseUser):
     )
     email: models.EmailField = models.EmailField(
         null=True,
-        blank=True
+        blank=True,
     )
     password: models.CharField = models.CharField(
-        max_length=100
+        max_length=100,
     )
     first_name: models.CharField = models.CharField(
-        max_length=200
+        max_length=200,
+        null=True,
+        blank=True,
     )
     last_name: models.CharField = models.CharField(
-        max_length=200
+        max_length=200,
+        null=True,
+        blank=True,
     )
     city: models.CharField = models.CharField(
-        max_length=200
+        max_length=200,
+        null=True,
+        blank=True,
     )
     mobile_number: models.CharField = models.CharField(
         max_length=15,
@@ -84,11 +90,6 @@ class Customer(AbstractBaseUser):
     )
     state: models.CharField = models.CharField(
         max_length=250,
-        null=True,
-        blank=True,
-    )
-    city: models.CharField = models.CharField(
-        max_length=120,
         null=True,
         blank=True,
     )
