@@ -1,6 +1,7 @@
 from rest_framework.views import APIView  # type: ignore
 from rest_framework.decorators import api_view  # type: ignore
 from rest_framework.response import Response  # type: ignore
+from rest_framework.request import Request  # type: ignore
 from rest_framework import status  # type: ignore
 
 from django.shortcuts import get_object_or_404
@@ -8,10 +9,6 @@ from django.core.exceptions import ValidationError
 
 from customers.models import (
     Customer
-)
-
-from organisations.models import (
-    Organisation
 )
 
 from .models import (
@@ -24,8 +21,12 @@ from .serializers import (
 )
 
 @api_view(['POST'])
-def change_order_status(request, org_id, order_id):
-    order_status = request.data.get('status')
+def change_order_status(
+    request: Request,
+    org_id: int | None,
+    order_id: int | None
+):
+    order_status = request.data.get('status')  # type: ignore
 
     if not order_status:
         return Response(
@@ -71,7 +72,12 @@ def change_order_status(request, org_id, order_id):
 
 
 class OrderViews(APIView):
-    def get(self, request, org_id=None, order_id=None):
+    def get(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        order_id: int | None=None
+    ):
         customer_id = request.query_params.get('customer_id')
 
         if order_id:
@@ -118,7 +124,11 @@ class OrderViews(APIView):
                 status=status.HTTP_200_OK
             )
 
-    def post(self, request, org_id=None):
+    def post(
+        self,
+        request: Request,
+        org_id: int | None=None
+    ):
         order_data = request.data
 
         try:
@@ -148,7 +158,12 @@ class OrderViews(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    def patch(self, request, id=None, org_id=None):
+    def patch(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         if not id:
             return Response(
                 {
@@ -174,7 +189,10 @@ class OrderViews(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id=None, org_id=None):
+    def delete(
+        self,
+        request: Request,
+        id: int | None=None, org_id: int | None=None):
         """Delete an existing order by ID."""
         if not id:
             return Response(
@@ -198,14 +216,22 @@ class OrderViews(APIView):
 
 
 class OrderItemViews(APIView):
-    def get(self, request, org_id=None, id=None):
+    def get(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        id: int | None=None
+    ):
         if id:
             try:
                 order_item = OrderItem.objects.get(id=id)
                 serializer = OrderItemSerializer(
                     order_item
                 )
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(
+                    serializer.data,
+                    status=status.HTTP_200_OK
+                )
             except OrderItem.DoesNotExist:
                 print(f"orderItem with id {id} not found")  # Debugging line
                 return Response(
@@ -217,9 +243,9 @@ class OrderItemViews(APIView):
             serializer = OrderItemSerializer(orderitems, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, org_id=None):
+    def post(self, request: Request, org_id: int | None=None):
         """Create a new orderItem."""
-        print("Request data:", request.data)  # Print the full request body
+        print("Request data:", request.data)
 
         try:
             # Create a new orderItem using the request data
@@ -244,7 +270,12 @@ class OrderItemViews(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    def patch(self, request, id=None, org_id=None):
+    def patch(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         """Update an existing orderItem by ID."""
         if not id:
             return Response(
@@ -275,7 +306,12 @@ class OrderItemViews(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    def delete(self, request, id=None, org_id=None):
+    def delete(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         """Delete an existing order by ID."""
         if not id:
             return Response(

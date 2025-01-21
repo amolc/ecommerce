@@ -1,9 +1,9 @@
-import requests
+import requests  # type: ignore
 
 
 def send_sms(
-    number,
-    body
+    number: str,
+    body: str
 ):
     session = requests.Session()
     url = 'http://bhashsms.com/api/sendmsg.php?'

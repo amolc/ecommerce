@@ -4,7 +4,7 @@ from django.contrib.auth.backends import (
     BaseBackend
 )
 
-def is_email(email):
+def is_email(email: str):
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     match = re.match(pattern, email)
     return match is not None

@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.http import HttpRequest
 from django.conf.urls.static import static
 
 
-def trigger_error(request):
+def trigger_error(request: HttpRequest):
     1 / 0
 
 

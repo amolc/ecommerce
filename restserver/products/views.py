@@ -8,7 +8,7 @@ from django.db.utils import (
     IntegrityError
 )
 
-
+from rest_framework.request import Request  # type: ignore
 from rest_framework.views import APIView  # type: ignore
 from rest_framework.response import Response  # type: ignore
 from rest_framework import status  # type: ignore
@@ -27,7 +27,11 @@ from .serializers import (
 
 
 class ProductAPIViews(APIView):
-    def post(self, request, org_id=None):
+    def post(
+        self,
+        request: Request,
+        org_id: int | None=None
+    ):
         data = request.data
         categoryid = data['category']
         category_object = ProductCategory.objects.get(id=categoryid)
@@ -54,7 +58,12 @@ class ProductAPIViews(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    def get(self, request, org_id=None, id=None):
+    def get(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        id: int | None=None
+    ):
         category_id = request.GET.get('category_id')
         page = request.GET.get('page')
         search = request.GET.get('search')
@@ -112,12 +121,17 @@ class ProductAPIViews(APIView):
                 "start_index": products_page.start_index(),
                 "end_index": products_page.end_index(),
                 "current_page": products_page.number,
-                "total_num_items": paginator.object_list.count(),
+                "total_num_items": paginator.object_list.count(),  # type: ignore
             },
             status=status.HTTP_200_OK
         )
 
-    def patch(self, request, org_id=None, id=None):
+    def patch(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        id: int | None=None
+    ):
         if not id:
             return Response(
                 {'status': 'error', 'message': 'ID is required for update'},
@@ -148,7 +162,12 @@ class ProductAPIViews(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # DELETE method to delete a product
-    def delete(self, request, org_id, id):
+    def delete(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        id: int | None=None
+    ):
         try:
             product = Product.objects.get(id=id)
             product.delete()
@@ -164,7 +183,12 @@ class ProductAPIViews(APIView):
 
 
 class ProductCategoryAPIViews(APIView):
-    def get(self, request, org_id=None, category_id=None):
+    def get(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         if category_id:
             try:
                 category = ProductCategory.objects.get(id=category_id)
@@ -199,7 +223,12 @@ class ProductCategoryAPIViews(APIView):
                 status=status.HTTP_200_OK
             )
 
-    def post(self, request, org_id, *args, **kwargs):
+    def post(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         serializer = ProductCategorySerializer(data=request.data)
 
         if serializer.is_valid():
@@ -207,7 +236,12 @@ class ProductCategoryAPIViews(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, org_id, category_id, *args, **kwargs):
+    def patch(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         try:
             category = ProductCategory.objects.get(id=category_id)
         except ProductCategory.DoesNotExist:
@@ -226,7 +260,12 @@ class ProductCategoryAPIViews(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, org_id, category_id):
+    def delete(
+        self,
+        request: Request,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         try:
             category = ProductCategory.objects.get(id=category_id)
             category.delete()
@@ -251,8 +290,12 @@ class ProductCategoryAPIViews(APIView):
 
 
 class ProductSubcategoryAPIViews(APIView):
-    def post(self, request, org_id):
-        category_id = request.data.get('category_id')
+    def post(
+        self,
+        request: Request,
+        org_id: int | None
+    ):
+        category_id = request.data.get('category_id')  # type: ignore
         
         if not category_id:
             return Response(
@@ -262,7 +305,7 @@ class ProductSubcategoryAPIViews(APIView):
 
         category = get_object_or_404(ProductCategory, id=category_id)
 
-        request_data = request.data.copy()
+        request_data = request.data.copy()  # type: ignore
         request_data['category'] = category.id
         request_data['org_id'] = org_id
 
@@ -277,7 +320,13 @@ class ProductSubcategoryAPIViews(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, id=None, org_id=None, category_id=None):
+    def get(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         subcategories = ProductSubcategory.objects.all()  # Default query
 
         if category_id:
@@ -289,7 +338,13 @@ class ProductSubcategoryAPIViews(APIView):
             status=status.HTTP_200_OK
         )
 
-    def patch(self, request, id=None, org_id=None, category_id=None):
+    def patch(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         if not id:
             return Response(
                 {'status': 'error', 'message': 'ID is required for update'},
@@ -315,7 +370,13 @@ class ProductSubcategoryAPIViews(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    def delete(self, request, id=None, org_id=None, category_id=None):
+    def delete(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None,
+        category_id: int | None=None
+    ):
         if not id:
             return Response(
                 {'status': 'error', 'message': 'ID is required for deletion'},

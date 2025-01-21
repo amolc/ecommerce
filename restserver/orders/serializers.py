@@ -1,3 +1,8 @@
+from typing import (
+    Dict,
+    Any
+)
+
 from rest_framework import serializers  # type: ignore
 
 from django.db import (
@@ -88,14 +93,14 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
         depth = 2
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super(OrderSerializer, self).__init__(*args, **kwargs)
 
         request = self.context.get('request')
         if request and request.method == 'GET':
             self.fields['order_items'].depth = 2
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict[str, Any]):
         order_items_data = validated_data.pop('order_items')
 
         if len(order_items_data) == 0:
@@ -131,7 +136,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
         return order
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Order, validated_data: Dict[str, Any]):
         for field, value in validated_data.items():
             setattr(instance, field, value)
         instance.save()

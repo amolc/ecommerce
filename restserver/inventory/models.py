@@ -1,3 +1,7 @@
+from typing import (
+    Any,
+)
+
 from django.db import models
 from products.models import Product
 from django.utils import timezone
@@ -55,7 +59,7 @@ class Inventory(models.Model):
         """Check if the stock is below the minimum stock level."""
         return self.stock_quantity < self.minimum_stock_level
 
-    def restock(self, quantity):
+    def restock(self, quantity: float):
         """
         Update stock level when new stock is added.
         :param quantity: Number of units to add to stock.
@@ -99,11 +103,11 @@ class StockMovement(models.Model):
             f"for {self.product.product_name}"
         )
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any):
         """
         Adjust inventory stock levels upon save.
         """
-        inventory = self.product.inventory
+        inventory = self.product.inventory  # type: ignore
         if self.movement_type == 'IN':
             inventory.stock_quantity += self.quantity
         elif self.movement_type == 'OUT':

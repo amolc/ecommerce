@@ -21,7 +21,7 @@ class CustomerManager(BaseUserManager):
         
         return user
 
-    def create_superuser(self, email, password=None, **kwargs):
+    def create_superuser(self, email: str, password: str, **kwargs: Any):
         kwargs.setdefault('is_super_admin', True)
         kwargs.setdefault('is_admin', True)
 

@@ -20,7 +20,7 @@ class Banner(models.Model):
         auto_now=True,
     )
 
-    organisation: models.OneToOneField = models.ForeignKey(
+    organisation: models.ForeignKey = models.ForeignKey(
         Organisation,
         on_delete=models.DO_NOTHING,
         related_name="banner",

@@ -1,3 +1,6 @@
+from typing import (
+    Any,
+)
 
 from rest_framework.views import (  # type: ignore
     APIView,
@@ -7,6 +10,9 @@ from rest_framework.viewsets import (  # type: ignore
 )
 from rest_framework.response import (  # type: ignore
     Response
+)
+from rest_framework.request import (  # type: ignore
+    Request
 )
 from rest_framework import (  # type: ignore
     status
@@ -28,8 +34,8 @@ from .utils import (
 
 
 class RegisterCustomerViews(APIView):
-    def post(self, request, org_id=None):
-        request_data = request.data.copy()
+    def post(self, request: Request, org_id: str | None=None):
+        request_data = request.data.copy()  # type: ignore
         request_data["org_id"] = org_id
 
         serializer_class = RegisterCustomerSerializer(
@@ -37,7 +43,7 @@ class RegisterCustomerViews(APIView):
         )
 
         if serializer_class.is_valid():
-            customer: Customer = serializer_class.save()
+            customer: Customer = serializer_class.save()  # type: ignore
             response_data = serializer_class.data
             response_data['user_id'] = customer.id
             
@@ -69,7 +75,7 @@ class RegisterCustomerViews(APIView):
 
 
 class AuthenticateUser(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Request, *args: Any, **kwargs: Any):
         try:
             serializer = LoginSerializer(
                 data=request.data,
@@ -147,7 +153,7 @@ class AuthenticateUser(APIView):
 
 
 class CustomerViews(APIView):
-    def get(self, request, id=None, org_id=None):
+    def get(self, request: Request, id: int | None=None, org_id: int | None=None):
         try:
             if id:
                 item = Customer.objects.get(id=id)
@@ -174,7 +180,12 @@ class CustomerViews(APIView):
                 e
             )
 
-    def patch(self, request, id=None, org_id=None):
+    def patch(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         request_data = request.data
         request_data["org_id"] = org_id
 
@@ -202,9 +213,17 @@ class CustomerViews(APIView):
                 },
                 status=status.HTTP_200_OK
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
-    def delete(self, request, id=None, org_id=None):
+    def delete(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         request_data = request.data
         request_data["org_id"] = org_id
         if not id:

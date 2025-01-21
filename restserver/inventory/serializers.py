@@ -1,3 +1,8 @@
+from typing import (
+    Dict,
+    Any
+)
+
 from rest_framework import serializers  # type: ignore
 from .models import Inventory
 
@@ -7,7 +12,7 @@ class InventorySerializer(serializers.ModelSerializer):
         model = Inventory
         fields = '__all__'
 
-    def validate(self, data):
+    def validate(self, data: Dict[str, Any]):
         # Validate that the product belongs to the specified organization
         product = data.get('product')
 

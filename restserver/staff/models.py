@@ -1,3 +1,6 @@
+from typing import (
+    Any,
+)
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -10,13 +13,23 @@ from organisations.models import (
 
 
 class StaffManager(BaseUserManager):
-    def create_user(self, email, password=None, **kwargs):
+    def create_user(
+        self,
+        email: str,
+        password: str | None=None,
+        **kwargs: Any
+    ):
         user = self.model(email=email, **kwargs)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **kwargs):
+    def create_superuser(
+        self,
+        email: str,
+        password: str | None=None,
+        **kwargs: Any
+    ):
         kwargs.setdefault('is_super_admin', True)
         kwargs.setdefault('is_admin', True)
 

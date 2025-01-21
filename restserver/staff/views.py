@@ -4,6 +4,9 @@ from rest_framework.views import (  # type: ignore
 from rest_framework.response import (  # type: ignore
     Response
 )
+from rest_framework.request import (  # type: ignore
+    Request
+)
 from rest_framework import (  # type: ignore
     status
 )
@@ -20,10 +23,14 @@ from .models import Staff
 
 
 class RegisterStaffViews(APIView):
-    def post(self, request, org_id=None):
+    def post(
+        self,
+        request: Request,
+        org_id: int | None=None
+    ):
         print("Registering Agent", request.data)
 
-        request_data = request.data.copy()
+        request_data = request.data.copy()  # type: ignore
         request_data["org_id"] = org_id
 
         serializer_class = RegisterStaffSerializer(data=request_data)
@@ -36,21 +43,40 @@ class RegisterStaffViews(APIView):
 
 
 class StaffViews(APIView):
-
-    def get(self, request, id=None, org_id=None):
+    def get(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         try:
             if id:
                 agent = Staff.objects.get(id=id)
                 serializer = StaffSerializer(agent)
-                return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+                return Response(
+                    {"status": "success", "data": serializer.data},
+                    status=status.HTTP_200_OK
+                )
 
             agents = Staff.objects.all()
             serializer = StaffSerializer(agents, many=True)
-            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
         except Exception as e:
-            return StayVillasResponse.exception_error(self.__class__.__name__, request, e)
+            return StayVillasResponse.exception_error(
+                self.__class__.__name__,
+                request,
+                str(e)
+            )
 
-    def patch(self, request, id=None, org_id=None):
+    def patch(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         request_data = request.data
         request_data["org_id"] = org_id
 
@@ -64,7 +90,12 @@ class StaffViews(APIView):
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id=None, org_id=None):
+    def delete(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         if not id:
             return Response({'status': 'error', 'message': 'ID is required for deletion'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -73,7 +104,12 @@ class StaffViews(APIView):
         return Response({'status': 'success', 'message': 'Agent deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 class LoginViews(APIView):
-    def post(self, request, id=None, org_id=None):
+    def post(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         # Pass the request data to the serializer
         serializer = LoginSerializer(data=request.data)
 
@@ -108,7 +144,12 @@ class LoginViews(APIView):
 
 class AgentFilterViews(APIView):
 
-    def get(self, request, id=None, org_id=None):
+    def get(
+        self,
+        request: Request,
+        id: int | None=None,
+        org_id: int | None=None
+    ):
         try:
             if id:
                 agent = Staff.objects.get(id=id)
@@ -119,4 +160,8 @@ class AgentFilterViews(APIView):
             serializer = StaffSerializer(agents, many=True)
             return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
         except Exception as e:
-            return StayVillasResponse.exception_error(self.__class__.__name__, request, e)
+            return StayVillasResponse.exception_error(
+                self.__class__.__name__,
+                request,
+                str(e)
+            )

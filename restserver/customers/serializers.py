@@ -1,7 +1,15 @@
+import re
+from typing import (
+    Dict,
+    Any
+)
+
+from rest_framework.request import (  # type: ignore
+    Request
+)
+
 from rest_framework import serializers  # type: ignore
 
-# custom
-import re
 from .models import Customer
 
 from django.contrib.auth.backends import BaseBackend
@@ -9,17 +17,22 @@ from django.contrib.auth import get_user_model
 
 
 class EmailBackend(BaseBackend):
-    def authenticate(self, request, email=None, password=None, **kwargs):
+    def authenticate(self, request: Request, email: str|None=None, password: str|None=None, **kwargs: Any):
         UserModel = get_user_model()
         try:
             user = UserModel.objects.get(email=email)
+            if password is None:
+                raise Exception("Password is none")
+
             if user.check_password(password):
                 return user
         except UserModel.DoesNotExist:
             return None
+        except Exception as e:
+            raise e
 
 
-def is_email(email):
+def is_email(email: str):
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     match = re.match(pattern, email)
     return match is not None
@@ -31,7 +44,7 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
 
-    def validate_mobile_number(self, value):
+    def validate_mobile_number(self, value: str):
         if not value:
             raise serializers.ValidationError(
                 'This field may not be blank',
@@ -45,7 +58,7 @@ class RegisterCustomerSerializer(serializers.ModelSerializer):
         
         return value
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict[str, Any]):
         user = Customer.objects.create_user(**validated_data)
         return user
 
@@ -71,7 +84,7 @@ class LoginSerializer(serializers.Serializer):
         model = Customer
         fields = '__all__'
 
-    def validate(self, data):
+    def validate(self, data: Dict[str, Any]):
         email = data.get('email')
         mobile_number = data.get('mobile_number')
         password = data.get('password')

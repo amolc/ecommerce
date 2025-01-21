@@ -1,3 +1,7 @@
+from typing import (
+    Dict,
+    Any
+)
 from rest_framework import (  # type: ignore
     serializers
 )
@@ -10,7 +14,7 @@ class RegisterStaffSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
 
-    def validate_email(self, value):
+    def validate_email(self, value: str):
         if not value:
             raise serializers.ValidationError(
                 'This field may not be blank',
@@ -23,7 +27,7 @@ class RegisterStaffSerializer(serializers.ModelSerializer):
             )
         return value
     
-    def create(self, validated_data):
+    def create(self, validated_data: Dict[str, Any]):
         user = Staff.objects.create_user(**validated_data)
         return user
 
@@ -36,7 +40,7 @@ class LoginSerializer(serializers.Serializer):
         trim_whitespace=False
     )
 
-    def validate(self, data):
+    def validate(self, data: Dict[str, Any]):
         email = data.get('email')
         password = data.get('password')
 

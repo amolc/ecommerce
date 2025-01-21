@@ -1,3 +1,7 @@
+from typing import (
+    Any,
+)
+
 from django.db import (
     models
 )
@@ -148,7 +152,7 @@ class Order(models.Model):
         related_name="orders"
     )
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any):
         if self.pk:
             original_order = Order.objects.get(
                 pk=self.pk
