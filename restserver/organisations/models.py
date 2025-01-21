@@ -14,7 +14,7 @@ class Organisation(models.Model):
         unique=True,
     )
     created_at: models.DateTimeField = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
     )
     updated_at: models.DateTimeField = models.DateTimeField(
         auto_now=True
