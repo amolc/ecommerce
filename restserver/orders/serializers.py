@@ -125,6 +125,8 @@ class OrderSerializer(serializers.ModelSerializer):
                 customer.billing_address2 = validated_data['billing_address2']
             if 'billing_address2_specifier' in validated_data:
                 customer.billing_address2_specifier = validated_data['billing_address2_specifier']
+            if 'state' in validated_data:
+                customer.state = validated_data['state']
             if 'country' in validated_data:
                 customer.country = validated_data['country']
             if 'city' in validated_data:
