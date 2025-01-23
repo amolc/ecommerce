@@ -30,7 +30,9 @@ class Order(models.Model):
     )
     PAYMENT_STATUS_CHOICES = (
         ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
+        ('warehoused', 'Warehoused'),
+        ('delivered', 'Delivered'),
+        ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
     )
 

@@ -71,9 +71,6 @@ class Staff(AbstractBaseUser):
         null=True,
         blank=True
     )
-    city: models.CharField = models.CharField(
-        max_length=200
-    )
     total_sales: models.DecimalField = models.DecimalField(
         max_digits=15,
         decimal_places=2,

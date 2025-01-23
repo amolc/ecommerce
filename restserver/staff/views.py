@@ -31,12 +31,14 @@ class RegisterStaffViews(APIView):
         print("Registering Agent", request.data)
 
         request_data = request.data.copy()  # type: ignore
-        request_data["org_id"] = org_id
+        request_data["org_id"] = org_id or 1
 
         serializer_class = RegisterStaffSerializer(data=request_data)
 
         if serializer_class.is_valid():
-            serializer_class.save()
+            staff = serializer_class.save()
+            staff.set_password(request_data['password'])
+            staff.save()
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
