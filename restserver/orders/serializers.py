@@ -46,6 +46,7 @@ class OrderSerializer(serializers.ModelSerializer):
     organisation = serializers.PrimaryKeyRelatedField(
         queryset=Organisation.objects.all()
     )
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
 
     class Meta:
         model = Order
@@ -83,6 +84,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'status_changes',
             'customer',
             'organisation',
+            'status_display',
         ]
         read_only_fields = [
             'id',

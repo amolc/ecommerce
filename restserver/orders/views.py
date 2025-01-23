@@ -59,14 +59,11 @@ def change_order_status(
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
-        except ValidationError:
+        except ValidationError as e:
             return Response(
                 {
                     "status": "error",
-                    "message": (
-                        "The status you've attempted to "
-                        "set is not supported."
-                    )
+                    "message": e.message
                 }
             )
 
@@ -79,6 +76,7 @@ class OrderViews(APIView):
         order_id: int | None=None
     ):
         customer_id = request.query_params.get('customer_id')
+        status_param = request.query_params.get('status')
 
         if order_id:
             try:
@@ -115,6 +113,8 @@ class OrderViews(APIView):
             )
         else:
             orders = Order.objects.all()
+            if status_param:
+                orders = orders.filter(status=status_param)
             serializer = OrderSerializer(orders, many=True)
             return Response(
                 {

@@ -25,14 +25,14 @@ from customers.models import (
 class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
+        ('confirmed', 'Confirmed'),
+        ('ready_for_delivery', 'Ready for Delivery'),
+        ('goods_collected', 'Goods Collected'),
+        ('delivered', 'Delivered'),
     )
     PAYMENT_STATUS_CHOICES = (
         ('pending', 'Pending'),
-        ('warehoused', 'Warehoused'),
-        ('delivered', 'Delivered'),
-        ('completed', 'Completed'),
+        ('confirmed', 'Confirmed'),
         ('cancelled', 'Cancelled'),
     )
 
@@ -161,23 +161,27 @@ class Order(models.Model):
             )
 
             if original_order.status != self.status:
-                if (
-                    original_order.status == 'pending'
-                    and self.status in ['completed', 'cancelled']
-                ):
-                    super().save(*args, **kwargs)
+                valid_transitions = {
+                    'pending': ['confirmed'],
+                    'confirmed': ['ready_for_delivery'],
+                    'ready_for_delivery': ['goods_collected', 'delivered'],
+                    'goods_collected': [],
+                    'delivered': []
+                }
 
-                    OrderStatusChange.objects.create(
-                        order=self,
-                        status_from=original_order.status,
-                        status_to=self.status
-                    )
-                    return
-                else:
+                if self.status not in valid_transitions[original_order.status]:
                     raise ValidationError(
-                        "Status can only be changed from "
-                        "'pending' to 'completed' or 'cancelled'"
+                        f"Invalid status transition from {original_order.status} to {self.status}"
                     )
+
+                super().save(*args, **kwargs)
+
+                OrderStatusChange.objects.create(
+                    order=self,
+                    status_from=original_order.status,
+                    status_to=self.status
+                )
+                return
 
         super().save(*args, **kwargs)
 
