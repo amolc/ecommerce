@@ -11,6 +11,10 @@ from customers.models import (
     Customer
 )
 
+from staff.models import (
+    Staff
+)
+
 from .models import (
     Order,
     OrderItem
@@ -65,6 +69,47 @@ def change_order_status(
                     "status": "error",
                     "message": e.message
                 }
+            )
+
+@api_view(['POST'])
+def change_order_assigned_to(
+    request: Request,
+    org_id: int | None,
+    order_id: int | None
+):
+    assigned_to_id = request.data.get('assigned_to')
+
+    if not assigned_to_id:
+        return Response(
+            {"status": "error", "message": "Assigned staff member not submitted."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    else:
+        try:
+            order = Order.objects.get(id=order_id)
+            staff_member = Staff.objects.get(id=assigned_to_id)
+            order.assigned_to = staff_member
+            order.save()
+
+            serializer = OrderSerializer(order)
+
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
+        except Order.DoesNotExist:
+            return Response(
+                {"status": "error", "message": "Order not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Staff.DoesNotExist:
+            return Response(
+                {"status": "error", "message": "Staff member not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except ValidationError as e:
+            return Response(
+                {"status": "error", "message": e.message}
             )
 
 

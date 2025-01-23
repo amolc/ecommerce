@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (
     OrderViews,
     OrderItemViews,
-    change_order_status
+    change_order_status,
+    change_order_assigned_to
 )
 
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path('update-order/<int:order_id>/', OrderViews.as_view()),
     path('delete-order/<int:order_id>/', OrderViews.as_view()),
     path('change-order-status/<int:order_id>', change_order_status),
+    path('change-order-assigned-to/<int:order_id>', change_order_assigned_to),
     
     path('orderItem/', OrderItemViews.as_view()),
     path('create-orderItem/', OrderItemViews.as_view()),

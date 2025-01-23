@@ -17,6 +17,10 @@ from customers.models import (
     Customer
 )
 
+from staff.models import (
+    Staff
+)
+
 from .models import (
     Order,
     OrderItem
@@ -36,6 +40,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
         ]
 
 
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = ['id', 'first_name', 'last_name', 'email']
+
+
 class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(
         many=True
@@ -47,6 +57,8 @@ class OrderSerializer(serializers.ModelSerializer):
         queryset=Organisation.objects.all()
     )
     status_display = serializers.CharField(source='get_status_display', read_only=True)
+    assigned_to = StaffSerializer(read_only=True)
+    assigned_to_changes = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Order
@@ -85,13 +97,16 @@ class OrderSerializer(serializers.ModelSerializer):
             'customer',
             'organisation',
             'status_display',
+            'assigned_to',
+            'assigned_to_changes',
         ]
         read_only_fields = [
             'id',
             'created_at',
             'updated_at',
             'status',
-            'status_changes'
+            'status_changes',
+            'assigned_to_changes'
         ]
         depth = 2
 
@@ -118,7 +133,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 )
                 
             customer = validated_data['customer'] 
- 
+            
             if 'billing_address' in validated_data:
                 customer.billing_address = validated_data['billing_address']
             if 'billing_address_specifier' in validated_data:

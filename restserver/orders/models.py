@@ -21,6 +21,8 @@ from customers.models import (
     Customer
 )
 
+from staff.models import Staff  # Import the Staff model
+
 
 class Order(models.Model):
     STATUS_CHOICES = (
@@ -153,6 +155,13 @@ class Order(models.Model):
         on_delete=models.DO_NOTHING,
         related_name="orders"
     )
+    assigned_to = models.ForeignKey(
+        Staff,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_orders'
+    )
 
     def save(self, *args: Any, **kwargs: Any):
         if self.pk:
@@ -180,6 +189,15 @@ class Order(models.Model):
                     order=self,
                     status_from=original_order.status,
                     status_to=self.status
+                )
+                return
+
+            if original_order.assigned_to != self.assigned_to:
+                super().save(*args, **kwargs)
+                OrderAssignedToChange.objects.create(
+                    order=self,
+                    assigned_from=original_order.assigned_to,
+                    assigned_to=self.assigned_to
                 )
                 return
 
@@ -256,6 +274,33 @@ class OrderStatusChange(models.Model):
             f"to {self.status_to} for order "
             f"{self.order} on {self.created_on}"
         )
+
+
+class OrderAssignedToChange(models.Model):
+    id = models.AutoField(primary_key=True)
+    assigned_from = models.ForeignKey(
+        Staff,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_from_changes'
+    )
+    assigned_to = models.ForeignKey(
+        Staff,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_to_changes'
+    )
+    created_on = models.DateTimeField(auto_now_add=True)
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='assigned_to_changes'
+    )
+
+    def __str__(self):
+        return f"Assigned from: {self.assigned_from} to {self.assigned_to} for order {self.order} on {self.created_on}"
 
 
 class OrderItem(models.Model):
