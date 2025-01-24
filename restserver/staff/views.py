@@ -36,7 +36,7 @@ class RegisterStaffViews(APIView):
         serializer_class = RegisterStaffSerializer(data=request_data)
 
         if serializer_class.is_valid():
-            staff = serializer_class.save()
+            staff: Staff = serializer_class.save()  # type: ignore
             staff.set_password(request_data['password'])
             staff.save()
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)

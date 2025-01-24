@@ -148,7 +148,7 @@ class AuthenticateUser(APIView):
             return StayVillasResponse.exception_error(
                 self.__class__.__name__,
                 request,
-                e
+                str(e)
             )
 
 
@@ -177,7 +177,7 @@ class CustomerViews(APIView):
             return StayVillasResponse.exception_error(
                 self.__class__.__name__,
                 request,
-                e
+                str(e)
             )
 
     def patch(
