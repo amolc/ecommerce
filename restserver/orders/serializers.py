@@ -99,6 +99,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'status_display',
             'assigned_to',
             'assigned_to_changes',
+            'delivery_date',
         ]
         read_only_fields = [
             'id',

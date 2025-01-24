@@ -23,6 +23,8 @@ from .serializers import (
     OrderSerializer,
     OrderItemSerializer
 )
+from orders.tasks import send_mail
+from datetime import datetime
 
 @api_view(['POST'])
 def change_order_status(
@@ -43,8 +45,81 @@ def change_order_status(
     else:
         try:
             order = Order.objects.get(id=order_id)
+            original_order_status = order.status
+            
             order.status = order_status
             order.save()
+            
+            # ADD LOGIC TO SEND EMAIL HERE.
+            email = order.email
+            subject = "Order Status Update"
+            full_name = f"{order.customer.first_name} {order.customer.last_name}"  # type: ignore
+
+            body = f"""
+            <html>
+            <head>
+                <style>
+                    .header {{
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: green;
+                    }}
+                    .order-details, .order-items {{
+                        margin-top: 20px;
+                    }}
+                    .order-items th, .order-items td {{
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                    }}
+                    .order-items th {{
+                        background-color: #f2f2f2;
+                    }}
+                    .order-summary {{
+                        margin-top: 20px;
+                        font-weight: bold;
+                    }}
+                </style>
+            </head>
+            <body>
+                <p class="header">Order Status Update</p>
+                <p>Dear { full_name },</p>
+                <p>Your order status has been updated from <strong>{original_order_status}</strong> to <strong>{order_status}</strong>.</p>
+                <div class="order-details">
+                    <p><strong>Order Details:</strong></p>
+                    <p>Order ID: {order.id}</p>
+                    <p>Order Date: {order.created_at.strftime('%Y-%m-%d')}</p>
+                </div>
+                <div class="order-items">
+                    <p><strong>Items:</strong></p>
+                    <table>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+            """
+            
+            for item in order.order_items.all():  # type: ignore
+                body += f"""
+                        <tr>
+                            <td>{item.product_name}</td>
+                            <td>{item.product_qty}</td>
+                            <td>₹{item.product_price}</td>
+                        </tr>
+                """
+            body += f"""
+                    </table>
+                </div>
+                <div class="order-summary">
+                    <p>Total Amount: ₹{order.amount}</p>
+                </div>
+                <p>Thank you for shopping with us.</p>
+                <p>Best regards,</p>
+                <p>Pamosapicks</p>
+            </body>
+            </html>
+            """
+            send_mail(email, subject, body)
 
             serializer = OrderSerializer(order)
 
@@ -77,7 +152,7 @@ def change_order_assigned_to(
     org_id: int | None,
     order_id: int | None
 ):
-    assigned_to_id = request.data.get('assigned_to')
+    assigned_to_id = request.data.get('assigned_to')  # type: ignore
 
     if not assigned_to_id:
         return Response(
@@ -112,6 +187,44 @@ def change_order_assigned_to(
                 {"status": "error", "message": e.message}
             )
 
+@api_view(['POST'])
+def change_order_delivery_date(
+    request: Request,
+    org_id: int | None,
+    order_id: int | None
+):
+    delivery_date = request.data.get('delivery_date')  # type: ignore
+    try:
+        delivery_date = datetime.strptime(delivery_date, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+    except ValueError:
+        return Response(
+            {"status": "error", "message": "Invalid delivery date format."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    if not delivery_date:
+        return Response(
+            {"status": "error", "message": "Delivery date not submitted."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    try:
+        order = Order.objects.get(id=order_id)
+        order.delivery_date = delivery_date
+        order.save()
+        serializer = OrderSerializer(order)
+        return Response(
+            {"status": "success", "data": serializer.data},
+            status=status.HTTP_200_OK
+        )
+    except Order.DoesNotExist:
+        return Response(
+            {"status": "error", "message": "Order not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except ValidationError as e:
+        return Response(
+            {"status": "error", "message": e.message}
+        )
 
 class OrderViews(APIView):
     def get(

@@ -1,6 +1,7 @@
 from typing import (
     Any,
 )
+from datetime import timedelta
 
 from django.db import (
     models
@@ -155,12 +156,16 @@ class Order(models.Model):
         on_delete=models.DO_NOTHING,
         related_name="orders"
     )
-    assigned_to = models.ForeignKey(
+    assigned_to: models.ForeignKey = models.ForeignKey(
         Staff,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='assigned_orders'
+    )
+    delivery_date: models.DateField = models.DateField(
+        blank=True,
+        null=True
     )
 
     def save(self, *args: Any, **kwargs: Any):
@@ -201,6 +206,11 @@ class Order(models.Model):
                 )
                 return
 
+        super().save(*args, **kwargs)
+        
+        if not self.delivery_date:
+            self.delivery_date = self.created_at.date() + timedelta(days=2)
+        
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -277,30 +287,30 @@ class OrderStatusChange(models.Model):
 
 
 class OrderAssignedToChange(models.Model):
-    id = models.AutoField(primary_key=True)
-    assigned_from = models.ForeignKey(
+    id: models.AutoField = models.AutoField(primary_key=True)
+    assigned_from: models.ForeignKey = models.ForeignKey(
         Staff,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='assigned_from_changes'
     )
-    assigned_to = models.ForeignKey(
+    assigned_to: models.ForeignKey = models.ForeignKey(
         Staff,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='assigned_to_changes'
     )
-    created_on = models.DateTimeField(auto_now_add=True)
-    order = models.ForeignKey(
+    created_at: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    order: models.ForeignKey = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
         related_name='assigned_to_changes'
     )
 
     def __str__(self):
-        return f"Assigned from: {self.assigned_from} to {self.assigned_to} for order {self.order} on {self.created_on}"
+        return f"Assigned from: {self.assigned_from} to {self.assigned_to} for order {self.order} on {self.created_at}"
 
 
 class OrderItem(models.Model):
