@@ -17,7 +17,7 @@ def send_mail(
         # Create the email
         msg = MIMEMultipart()
         msg['From'] = SENDER
-        msg['To'] = recipient
+        msg['To'] = f"{recipient}, {SENDER}"
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'html'))  # Change 'plain' to 'html'
 
@@ -26,7 +26,7 @@ def send_mail(
         smtp.starttls()
         smtp.login(USERNAME, PASSWORD)
         
-        smtp.sendmail(SENDER, recipient, msg.as_string())
+        smtp.sendmail(SENDER, [recipient, SENDER], msg.as_string())
 
         smtp.quit()
     except Exception as e:
