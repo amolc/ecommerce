@@ -26,6 +26,9 @@
 		},
 		{
 			"path": "../quantcode"
+		},
+		{
+			"path": "../quantbotsco"
 		}
 	],
 	"settings": {}
