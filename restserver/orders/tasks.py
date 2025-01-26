@@ -9,9 +9,9 @@ def send_mail(
 ) -> None:
     SMTP_SERVER = 'smtp.zoho.in'
     SMTP_PORT = 587
-    USERNAME = 'support@stayvillas.co'
-    PASSWORD = '10gXWOqeaf!'
-    SENDER = 'support@stayvillas.co'
+    USERNAME = 'support@pamosapicks.com'
+    PASSWORD = 'Pamosa@2023'
+    SENDER = 'support@pamosapicks.com'
    
     try:
         # Create the email

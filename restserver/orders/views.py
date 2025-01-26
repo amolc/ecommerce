@@ -7,6 +7,10 @@ from rest_framework import status  # type: ignore
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
+from orders.utils import (
+    send_order_confirmation_email
+)
+
 from customers.models import (
     Customer
 )
@@ -288,11 +292,23 @@ class OrderViews(APIView):
         org_id: int | None=None
     ):
         order_data = request.data
-
+        print(order_data)
+        
         try:
+           
             serializer = OrderSerializer(data=order_data)
             if serializer.is_valid():
                 serializer.save()
+
+                order_id = serializer.data['id']
+                # Let's send an email to the customer
+                customer_email = serializer.validated_data['customer'].email
+                customer_name = serializer.validated_data['customer'].first_name + serializer.validated_data['customer'].last_name
+                order_status = serializer.data['status']                
+                order_items = serializer.data['order_items']  
+
+                send_order_confirmation_email(customer_email, customer_name, order_id, order_status, order_items)
+                # send_telegram_message(customer_email, customer_name, order_id, order_status, order_items)
 
                 return Response({
                     "status": "success",

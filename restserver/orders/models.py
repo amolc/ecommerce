@@ -205,13 +205,14 @@ class Order(models.Model):
                     assigned_to=self.assigned_to
                 )
                 return
+            
+            if not self.delivery_date:
+                self.delivery_date = self.created_at.date() + timedelta(days=2)
+                self.save()
 
         super().save(*args, **kwargs)
         
-        if not self.delivery_date:
-            self.delivery_date = self.created_at.date() + timedelta(days=2)
-        
-        super().save(*args, **kwargs)
+      
 
     def __str__(self):
         return (
@@ -326,7 +327,7 @@ class OrderItem(models.Model):
         on_delete=models.DO_NOTHING,
         related_name="order_items",
     )
-    product_image: models.TextField = models.TextField()
+    product_image: models.TextField = models.TextField(blank=True)
     product_name: models.CharField = models.CharField(
         max_length=255
     )

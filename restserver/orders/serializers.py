@@ -125,8 +125,13 @@ class OrderSerializer(serializers.ModelSerializer):
             raise Exception("There are no items in this order")
 
         with transaction.atomic():
+            Instance = Order.objects.all().order_by('-id')
+            
             order = Order.objects.create(**validated_data)
+            print(order)
 
+            print("-------------------------------")
+            
             for item_data in order_items_data:
                 OrderItem.objects.create(
                     order=order,
@@ -134,7 +139,15 @@ class OrderSerializer(serializers.ModelSerializer):
                 )
                 
             customer = validated_data['customer'] 
-            
+
+            if 'email' in validated_data:
+                customer.email = validated_data['email']
+            if 'mobile_number' in validated_data:
+                customer.mobile_number = validated_data['mobile_number']
+            if 'first_name' in validated_data:
+                customer.first_name = validated_data['first_name']
+            if 'last_name' in validated_data:
+                customer.last_name = validated_data['last_name']
             if 'billing_address' in validated_data:
                 customer.billing_address = validated_data['billing_address']
             if 'billing_address_specifier' in validated_data:
@@ -152,7 +165,7 @@ class OrderSerializer(serializers.ModelSerializer):
             if 'postal_code' in validated_data:
                 customer.postal_code = validated_data['postal_code']
 
-            customer.save()
+        customer.save()
 
         return order
 
