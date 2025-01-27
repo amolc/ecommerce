@@ -294,43 +294,46 @@ class OrderViews(APIView):
         order_data = request.data
         print(order_data)
         
-        try:
-           
-            serializer = OrderSerializer(data=order_data)
-            if serializer.is_valid():
-                serializer.save()
+        
+        # try:  
+        serializer = OrderSerializer(data=order_data)
+        if serializer.is_valid():
+            serializer.save()
 
-                order_id = serializer.data['id']
-                # Let's send an email to the customer
-                customer_email = serializer.validated_data['customer'].email
-                customer_name = serializer.validated_data['customer'].first_name + serializer.validated_data['customer'].last_name
-                order_status = serializer.data['status']                
-                order_items = serializer.data['order_items']  
+            order_id = serializer.data['id']
+            # Let's send an email to the customer
+            print("Line 305 Passed, Order Generated Successfully",order_id)
+            customer_email = serializer.validated_data['customer'].email
+            customer_name = serializer.validated_data['customer'].first_name + serializer.validated_data['customer'].last_name
+            order_status = serializer.data['status']                
+            order_items = serializer.data['order_items']  
 
-                send_order_confirmation_email(customer_email, customer_name, order_id, order_status, order_items)
-                # send_telegram_message(customer_email, customer_name, order_id, order_status, order_items)
+            send_order_confirmation_email(customer_email, customer_name, order_id, order_status, order_items)
+            # send_telegram_message(customer_email, customer_name, order_id, order_status, order_items)
 
-                return Response({
-                    "status": "success",
-                    "data": serializer.data
-                }, status=status.HTTP_201_CREATED)
-            else:
-                return Response(
-                    {
-                        "status": "error",
-                        "message": str(serializer.errors)
-                    },
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-        except Exception as e:
+            return Response({
+                "status": "success",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        else:
+            print("Error line 319: " + str(serializer.errors))
             return Response(
                 {
                     "status": "error",
-                    "message": str(e)
+                    "message": str(serializer.errors)
                 },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                status=status.HTTP_400_BAD_REQUEST
             )
+
+        # except Exception as e:
+        #     print("Error Line 329: " + str(e))
+        #     return Response(
+        #         {
+        #             "status": "error",
+        #             "message": str(e)
+        #         },
+        #         status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        #     )
 
     def patch(
         self,

@@ -32,7 +32,7 @@ def sendmail_smtp(recipient,subject,body):
         msg['From'] = sender
         msg['To'] = recipient
         msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
+        msg.attach(MIMEText(body, 'html'))
 
         # Add attachment
 
@@ -56,47 +56,53 @@ def send_order_confirmation_email(customer_email, customer_name, order_id, order
     # body = f"Dear {customer_name},\n\nYour order with ID {order_id} has been received with status {order_status}.\n\nItems:\n{order_items}\n\nThank you for your order!"
    
     body = f"""
-        <html>
-        <head>
-            <style>
-                .header {{
-                    font-size: 24px;
-                    font-weight: bold;
-                    color: green;
-                }}
-                .order-details, .order-items {{
-                    margin-top: 20px;
-                }}
-                .order-items th, .order-items td {{
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                }}
-                .order-items th {{
-                    background-color: #f2f2f2;
-                }}
-                .order-summary {{
-                    margin-top: 20px;
-                    font-weight: bold;
-                }}
-            </style>
-        </head>
-        <body>
-            <p class="header">Order Status Update</p>
-            <p>Dear { customer_name },</p>
-            <p>Your order status has been received with status <strong>{order_status}</strong> .</p>
-            <div class="order-details">
-                <p><strong>Order Details:</strong></p>
-                <p>Order ID: {order_id}</p>
-            </div>
-            <div class="order-items">
-                <p><strong>Items:</strong></p>
-                <table>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
+    <html>
+    <body>
+        <p style="font-size: 24px; font-weight: bold; color: green;">Order Received</p>
+        <p>Dear {customer_name},</p>
+        <p>Your Order <strong>{order_id}</strong> has been received with status <strong>{order_status}</strong>.</p>
+        <div style="margin-top: 20px;">
+            <p><strong>Order Details:</strong></p>
+            <p>Order ID: {order_id}</p>
+        </div>
+        <div style="margin-top: 20px;">
+            <p><strong>Items:</strong></p>
+            <table style="border-collapse: collapse; width: 100%; margin-top: 10px;">
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Product Name</th>
+                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Quantity</th>
+                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Price</th>
+                    <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Product Sub Total</th>
+                </tr>
         """
+    for item in order_items:
+            order_total = sum(float(item['product_subtotal']) for item in order_items)
+            body += f"""
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item['product_name']}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item['product_qty']}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item['product_price']}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item['product_subtotal']}</td>
+                </tr>
+            """
+
+   
+    body += f"""
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" colspan="3"><strong>Order Total:</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"><strong>{order_total}</strong></td>
+                </tr>
+            """
+    body += """
+                </table>
+            </div>
+            <p>Thank you for your order!</p>
+            <p>Best regards,</p>
+            <p>Pamosapicks</p>
+        </body>
+        </html>
+        """
+
    
     sendmail_smtp(customer_email, subject, body)
     sendmail_smtp("support@pamosapicks.com", subject, body)
