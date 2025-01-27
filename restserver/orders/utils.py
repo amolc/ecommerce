@@ -5,7 +5,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 from icecream import ic
 
 import smtplib
@@ -22,7 +21,6 @@ def sendmail_smtp(recipient,subject,body):
     SMTP_PORT = 587  # For TLS
     USERNAME = 'support@pamosapicks.com'
     PASSWORD = 'Pamosa@2023'  # Replace with your password or app-specific password
-
     # Email content
     sender = 'support@pamosapicks.com'
    
