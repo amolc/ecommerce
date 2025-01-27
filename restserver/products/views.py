@@ -77,7 +77,7 @@ class ProductAPIViews(APIView):
             )
 
         # Otherwise, fetch products with optional filters
-        products = Product.objects.all()
+        products = Product.objects.filter(is_active=True)
 
         if category_id is not None:
             products = products.filter(category_id=category_id)
