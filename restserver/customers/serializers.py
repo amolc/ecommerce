@@ -10,10 +10,14 @@ from rest_framework.request import (  # type: ignore
 
 from rest_framework import serializers  # type: ignore
 
-from .models import Customer
-
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import get_user_model
+
+from orders.serializers import (
+    OrderSerializer
+)
+
+from .models import Customer
 
 
 class EmailBackend(BaseBackend):
@@ -163,6 +167,10 @@ class LoginSerializer(serializers.Serializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
+    orders = OrderSerializer(
+        many=True
+    )
+
     class Meta:
         model = Customer
         exclude = [ 'password' ]

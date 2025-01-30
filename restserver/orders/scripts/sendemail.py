@@ -1,14 +1,9 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
 
 
-
-
-def smtpserver(recipient,subject,body):
-
+def smtpserver(recipient: str, subject: str, body: str):
     SMTP_SERVER = 'smtp.zoho.in'
     SMTP_PORT = 587  # For TLS
     USERNAME = 'support@stayvillas.co'

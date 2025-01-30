@@ -1,22 +1,21 @@
+from typing import (
+    List
+)
 
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+import smtplib  # type: ignore
 
-from icecream import ic
-
-import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
+from .serializers import (
+    OrderItemSerializer
+)
 
 
-
-def sendmail_smtp(recipient,subject,body):
-
+def sendmail_smtp(
+    recipient: str,
+    subject: str,
+    body: str
+):
     SMTP_SERVER = 'smtp.zoho.in'
     SMTP_PORT = 587  # For TLS
     USERNAME = 'support@pamosapicks.com'
@@ -49,7 +48,13 @@ def sendmail_smtp(recipient,subject,body):
         print(f"Failed to send email: {e}")
 
 
-def send_order_confirmation_email(customer_email, customer_name, order_id, order_status, order_items):
+def send_order_confirmation_email(
+    customer_email: str,
+    customer_name: str,
+    order_id: int,
+    order_status: str,
+    order_items: List[OrderItemSerializer]
+):
     subject = 'Order Confirmation'
     # body = f"Dear {customer_name},\n\nYour order with ID {order_id} has been received with status {order_status}.\n\nItems:\n{order_items}\n\nThank you for your order!"
    

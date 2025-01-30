@@ -1,21 +1,19 @@
 import os
+import re
 import base64
+
 from django.conf import settings
-from products.models import Product  # Replace `myapp` with your app's name
+from products.models import Product
 
 # Ensure the static directory exists
 STATIC_DIR = os.path.join(settings.BASE_DIR, "static", "product_images")
 os.makedirs(STATIC_DIR, exist_ok=True)
 
-import base64
-import os
-import re
-
-def is_valid_base64(data):
+def is_valid_base64(data: str):
     base64_regex = re.compile(r'^[A-Za-z0-9+/=]+$')
     return bool(base64_regex.match(data))
 
-def save_product_images_and_update_path(product_id=None):
+def save_product_images_and_update_path(product_id: int|None=None):
     # If product_id is provided, filter by that ID, else fetch all active products
     if product_id:
         products = Product.objects.filter(id=product_id, is_active=True)
