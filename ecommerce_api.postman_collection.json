@@ -1,0 +1,259 @@
+{
+  "info": {
+    "name": "E-commerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/products/?page=1&category_id=1&search=product_name",
+              "host": ["{{base_url}}"],
+              "path": ["products", ""],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1",
+                  "description": "Filter by category ID"
+                },
+                {
+                  "key": "search",
+                  "value": "product_name",
+                  "description": "Search products by name"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/get-product/1/",
+              "host": ["{{base_url}}"],
+              "path": ["get-product", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/create-products/",
+              "host": ["{{base_url}}"],
+              "path": ["create-products", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"Sample Product\",\n  \"product_description\": \"Product description\",\n  \"price\": 99.99,\n  \"discount_price\": 89.99,\n  \"unit\": \"piece\",\n  \"stock_quantity\": 100,\n  \"mfg\": \"2023-01-01\",\n  \"product_life\": 12,\n  \"product_type\": \"organic\",\n  \"category\": 1,\n  \"subcategory\": 1,\n  \"organisation\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/update-products/1/",
+              "host": ["{{base_url}}"],
+              "path": ["update-products", "1", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"Updated Product Name\",\n  \"price\": 109.99\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/delete-products/1/",
+              "host": ["{{base_url}}"],
+              "path": ["delete-products", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/category/",
+              "host": ["{{base_url}}"],
+              "path": ["category", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/get-category/1/",
+              "host": ["{{base_url}}"],
+              "path": ["get-category", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/create-category/",
+              "host": ["{{base_url}}"],
+              "path": ["create-category", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"New Category\",\n  \"category_description\": \"Category description\",\n  \"organisation\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/update-category/1/",
+              "host": ["{{base_url}}"],
+              "path": ["update-category", "1", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_name\": \"Updated Category Name\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/delete-category/1/",
+              "host": ["{{base_url}}"],
+              "path": ["delete-category", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subcategories",
+      "item": [
+        {
+          "name": "List Subcategories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/subcategory/",
+              "host": ["{{base_url}}"],
+              "path": ["subcategory", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Subcategory by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/get-subcategory/1/",
+              "host": ["{{base_url}}"],
+              "path": ["get-subcategory", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Subcategory",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/create-subcategory/",
+              "host": ["{{base_url}}"],
+              "path": ["create-subcategory", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subcategory_name\": \"New Subcategory\",\n  \"subcategory_description\": \"Subcategory description\",\n  \"category\": 1,\n  \"organisation\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Subcategory",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/update-subcategory/1/",
+              "host": ["{{base_url}}"],
+              "path": ["update-subcategory", "1", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subcategory_name\": \"Updated Subcategory Name\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Subcategory",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/delete-subcategory/1/",
+              "host": ["{{base_url}}"],
+              "path": ["delete-subcategory", "1", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
