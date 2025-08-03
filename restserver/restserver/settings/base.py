@@ -113,8 +113,8 @@ SILENCED_SYSTEM_CHECKS = ["auth.E003"]
 # Both of those packages override this setting.
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
 

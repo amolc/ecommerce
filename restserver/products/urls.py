@@ -6,7 +6,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('products/', ProductAPIViews.as_view()),
+    path('get-products/', ProductAPIViews.as_view()),
     path('create-products/', ProductAPIViews.as_view()),
     path('get-product/<int:id>/', ProductAPIViews.as_view()),
     path('update-products/<int:id>/', ProductAPIViews.as_view()),
