@@ -4,7 +4,7 @@ from .views import (
     ProductCategoryAPIViews,
     ProductSubcategoryAPIViews,
 )
-
+# URL Patterns for Prouducts
 urlpatterns = [
     path('get-products/', ProductAPIViews.as_view()),
     path('create-products/', ProductAPIViews.as_view()),
