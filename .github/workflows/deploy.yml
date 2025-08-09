@@ -2,27 +2,53 @@ name: Deploy to Ubuntu Server
 
 on:
   push:
-    branches:
-      - main # Trigger on pushes to the main branch
+    branches: [ main ]
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest # Use an Ubuntu runner provided by GitHub Actions
-
+    runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 # Checkout your repository's code
-
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0 # Use an action to set up SSH agent
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Use a GitHub Secret for your private key
-
-      - name: Deploy via SSH
+      - name: Deploy to Ubuntu Server
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: pamosapicks.com
+          USER_NAME: ubuntu
+      
         run: |
-          rsync -avz \
-            --delete \
-            -e "ssh -o StrictHostKeyChecking=no" \
-            ./ \
-            ubuntu@pamosapicks.com:/home/ubuntu/repos/ecommerce
-          ./scripts/deployapi_ns1.sh ecommerce
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -i private_key -o StrictHostKeyChecking=no ${USER_NAME}@${HOSTNAME} << 'EOF'
+            # Navigate to repository directory
+            cd /home/ubuntu/repos/ecommerce
+            
+            # Pull latest changes from main branch
+            git fetch origin
+            git checkout main
+            git pull origin main
+            
+            # Show latest commit for verification
+            echo "Latest commit:"
+            git log -1 --oneline
+            
+            # Copy updated code to project directory
+            echo "Updating project files..."
+            rsync -av --exclude='.git/' --exclude='venv/' --exclude='logs/' --exclude='__pycache__/' --exclude='*.pyc' /home/ubuntu/repos/ecommerce/restserver/ /home/ubuntu/ecommerce/restserver/
+            
+            # Activate virtual environment and install/update dependencies
+            cd /home/ubuntu/ecommerce
+            source venv/bin/activate
+            pip install -r /home/ubuntu/repos/ecommerce/requirements.txt
+            
+            # Run database migrations
+            cd restserver
+            python manage.py migrate --settings=restserver.settings.production
+            
+            # Collect static files
+            python manage.py collectstatic --noinput --settings=restserver.settings.production
+            
+            # Restart services
+            echo "Restarting services..."
+            pm2 restart all
+            
+            echo "Deployment completed successfully!"
+          EOF
