@@ -20,8 +20,8 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@pamosapicks.com "
-            cd /home/ubuntu/repos/ecommerce # Navigate to your application directory on the server
-            git pull origin main # Pull the latest changes
-            ./scripts/deployapi_ns1.sh # Run your deployment script
-          "
+          rsync -avz \
+            --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./ \
+            ubuntu@pamosapicks.com:/home/ubuntu/repos/ecommerce
