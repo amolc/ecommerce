@@ -1,27 +1,31 @@
-name: Deploy
+name: Deploy Script
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main   # deploy only when pushing to main branch
 
 jobs:
-  Deploy:
+  deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v2 
+      # Step 1: Check out the repo
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Build & Deploy to First Host
-        env:
-            PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-            HOSTNAME: ${{secrets.HOST_DNS}}
-            USER_NAME: ${{secrets.SSH_USER}}
-      
+      # Step 2: Set up SSH
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Step 3: Copy files to server
+      - name: Upload files
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -i private_key -o StrictHostKeyChecking=no ${USER_NAME}@${HOSTNAME} << 'EOF'
-            cd /home/ubuntu/repos/ecommerce-api
-            ./scripts/deployapi_ns1.sh ecommerce
-          EOF
+          scp -o StrictHostKeyChecking=no -r ./* user@pamosapicks.com:/home/ubuntu/repos/ecommerce
 
-          # this is a test
+      # Step 4: Run script on server
+      - name: Run script remotely
+        run: |
+          ssh -o StrictHostKeyChecking=no user@pamosapicks.com "cd /home/ubuntu/repos/ecommerce && ./scripts/deployapi_ns1.sh"
