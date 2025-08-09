@@ -19,6 +19,5 @@ APISERVER="restserver"
 STATIC_DIR="/home/ubuntu/ecommerce/static"
 EXCLUDE_DIRS="logs/ /.git/ /datafeed/csv/ venv/"
 
-#there is some tech
 
 
