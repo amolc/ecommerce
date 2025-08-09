@@ -25,3 +25,4 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             ./ \
             ubuntu@pamosapicks.com:/home/ubuntu/repos/ecommerce
+          ./scripts/deployapi_ns1.sh ecommerce
