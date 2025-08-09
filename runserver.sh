@@ -1,7 +1,8 @@
 #!/bin/bash
 ps -ef | grep "manage.py runserver" | awk '{print $2}' | xargs kill -9 
 
-source scripts/configs/ecommerce.sh
+# Use local settings by default for development
+export DJANGO_SETTINGS_MODULE="restserver.settings.local"
 source venv/bin/activate
 pip install -r requirements.txt
 # cp -R docs/build/html restserver/static/
