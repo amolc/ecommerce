@@ -4,11 +4,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'flipopo_dev',
-        'USER': 'flipopo_dev',
-        'PASSWORD': '!Xdasdf890',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pamosapicks',
+        'USER': 'pamosapicks',
+        'PASSWORD': '10gXWOqeaf!',
+        'HOST': 'db.pamosapicks.com',
+        'PORT': '3306'
     }
 }
