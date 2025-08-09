@@ -8,3 +8,5 @@ $env:MYSQL_PORT = '5432'
 $env:CELERY_URL = 'amqp://localhost'
 $env:REDIS_HOST = '127.0.0.1'
 $env:REDIS_PORT = '6379'
+
+# This is a new server
