@@ -1,0 +1,639 @@
+{
+	"info": {
+		"_postman_id": "category-api-collection",
+		"name": "Category API Collection",
+		"description": "Complete Postman collection for testing Category API endpoints. Includes all CRUD operations, custom actions, and test scenarios.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "category-api"
+	},
+	"item": [
+		{
+			"name": "List Categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						""
+					]
+				},
+				"description": "Retrieve all categories with optional filtering"
+			},
+			"response": []
+		},
+		{
+			"name": "List Categories with Filters",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/?is_active=true",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						""
+					],
+					"query": [
+						{
+							"key": "is_active",
+							"value": "true",
+							"description": "Filter by active status"
+						}
+					]
+				},
+				"description": "Retrieve categories filtered by active status"
+			},
+			"response": []
+		},
+		{
+			"name": "List Active Categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/active/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						"active",
+						""
+					]
+				},
+				"description": "Retrieve only active categories using custom endpoint"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Category",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"category_name\": \"Electronics\",\n  \"category_description\": \"Electronic devices and accessories\",\n  \"is_active\": true,\n  \"category_image\": \"electronics.jpg\",\n  \"organisation\": {{org_id}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						""
+					]
+				},
+				"description": "Create a new category"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Category (Books)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"category_name\": \"Books\",\n  \"category_description\": \"Books and literature\",\n  \"is_active\": true,\n  \"category_image\": \"books.jpg\",\n  \"organisation\": {{org_id}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						""
+					]
+				},
+				"description": "Create a books category for testing"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Category (Clothing)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"category_name\": \"Clothing\",\n  \"category_description\": \"Clothing and fashion accessories\",\n  \"is_active\": false,\n  \"category_image\": \"clothing.jpg\",\n  \"organisation\": {{org_id}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						""
+					]
+				},
+				"description": "Create an inactive clothing category for testing"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Category by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/{{category_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						"{{category_id}}",
+						""
+					]
+				},
+				"description": "Retrieve a specific category by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Category (Full Update)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"category_name\": \"Electronics Updated\",\n  \"category_description\": \"Updated electronic devices and accessories\",\n  \"is_active\": true,\n  \"category_image\": \"electronics_updated.jpg\",\n  \"organisation\": {{org_id}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/{{category_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						"{{category_id}}",
+						""
+					]
+				},
+				"description": "Update a category with all fields (full update)"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Category (Partial Update)",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"category_name\": \"Electronics Partially Updated\",\n  \"is_active\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/{{category_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						"{{category_id}}",
+						""
+					]
+				},
+				"description": "Update only specific fields of a category (partial update)"
+			},
+			"response": []
+		},
+		{
+			"name": "Toggle Category Status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/{{category_id}}/toggle_status/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						"{{category_id}}",
+						"toggle_status",
+						""
+					]
+				},
+				"description": "Toggle the active status of a category"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Category",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/{{org_id}}/api/category/categories/{{category_id}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{org_id}}",
+						"api",
+						"category",
+						"categories",
+						"{{category_id}}",
+						""
+					]
+				},
+				"description": "Delete a specific category"
+			},
+			"response": []
+		},
+		{
+			"name": "Error Tests",
+			"item": [
+				{
+					"name": "Create Category - Invalid Data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category_name\": \"\",\n  \"organisation\": {{org_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{org_id}}",
+								"api",
+								"category",
+								"categories",
+								""
+							]
+						},
+						"description": "Test error handling with invalid data (empty category name)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category - Duplicate Name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category_name\": \"Electronics\",\n  \"category_description\": \"Duplicate category\",\n  \"organisation\": {{org_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{org_id}}",
+								"api",
+								"category",
+								"categories",
+								""
+							]
+						},
+						"description": "Test error handling with duplicate category name"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category - Not Found",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{org_id}}/api/category/categories/999/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{org_id}}",
+								"api",
+								"category",
+								"categories",
+								"999",
+								""
+							]
+						},
+						"description": "Test error handling for non-existent category"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category - Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category_name\": \"Non-existent Category\",\n  \"organisation\": {{org_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{org_id}}/api/category/categories/999/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{org_id}}",
+								"api",
+								"category",
+								"categories",
+								"999",
+								""
+							]
+						},
+						"description": "Test error handling for updating non-existent category"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category - Not Found",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/{{org_id}}/api/category/categories/999/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{org_id}}",
+								"api",
+								"category",
+								"categories",
+								"999",
+								""
+							]
+						},
+						"description": "Test error handling for deleting non-existent category"
+					},
+					"response": []
+				}
+			],
+			"description": "Test scenarios for error handling and edge cases"
+		},
+		{
+			"name": "Test Data Setup",
+			"item": [
+				{
+					"name": "Create Test Categories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"category_name\": \"Electronics\",\n    \"category_description\": \"Electronic devices and accessories\",\n    \"is_active\": true,\n    \"organisation\": {{org_id}}\n  },\n  {\n    \"category_name\": \"Books\",\n    \"category_description\": \"Books and literature\",\n    \"is_active\": true,\n    \"organisation\": {{org_id}}\n  },\n  {\n    \"category_name\": \"Clothing\",\n    \"category_description\": \"Clothing and fashion\",\n    \"is_active\": false,\n    \"organisation\": {{org_id}}\n  },\n  {\n    \"category_name\": \"Home & Garden\",\n    \"category_description\": \"Home improvement and garden supplies\",\n    \"is_active\": true,\n    \"organisation\": {{org_id}}\n  },\n  {\n    \"category_name\": \"Sports & Outdoors\",\n    \"category_description\": \"Sports equipment and outdoor gear\",\n    \"is_active\": true,\n    \"organisation\": {{org_id}}\n  }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{org_id}}/api/category/categories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{org_id}}",
+								"api",
+								"category",
+								"categories",
+								""
+							]
+						},
+						"description": "Create multiple test categories for comprehensive testing"
+					},
+					"response": []
+				}
+			],
+			"description": "Setup requests to create test data"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script to set up test data",
+					"console.log('Setting up test environment...');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Test script to validate responses",
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"pm.test(\"Response has required fields\", function () {",
+					"    const response = pm.response.json();",
+					"    pm.expect(response).to.have.property('status');",
+					"    pm.expect(response).to.have.property('message');",
+					"    if (response.status === 'success') {",
+					"        pm.expect(response).to.have.property('data');",
+					"    }",
+					"});",
+					"",
+					"// Store category ID for subsequent requests",
+					"if (pm.response.code === 201 || pm.response.code === 200) {",
+					"    const response = pm.response.json();",
+					"    if (response.data && response.data.id) {",
+					"        pm.environment.set('category_id', response.data.id);",
+					"        console.log('Category ID stored:', response.data.id);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:9999",
+			"type": "string"
+		},
+		{
+			"key": "org_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

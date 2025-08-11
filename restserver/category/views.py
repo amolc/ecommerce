@@ -1,13 +1,21 @@
+from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from .models import Category
 from .serializers import CategorySerializer
+from rest_framework.exceptions import ValidationError  
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.serializers import Serializer
 
 
+# Create your views here.
 class CategoryViewSet(viewsets.ModelViewSet):
     """
     A comprehensive ViewSet for Category CRUD operations.
@@ -25,7 +33,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     def list(self, request, *args, **kwargs):
         """
@@ -94,26 +102,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
         """
         Retrieve a specific category by ID.
         """
-        try:
-            category = self.get_object()
-            serializer = self.get_serializer(category)
-            
-            return Response({
-                'status': 'success',
-                'message': 'Category retrieved successfully',
-                'data': serializer.data
-            }, status=status.HTTP_200_OK)
-            
-        except Category.DoesNotExist:
-            return Response({
-                'status': 'error',
-                'message': 'Category not found'
-            }, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({
-                'status': 'error',
-                'message': f'Error retrieving category: {str(e)}'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        category = self.get_object()
+        serializer = self.get_serializer(category)
+        
+        return Response({
+            'status': 'success',
+            'message': 'Category retrieved successfully',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
     
     def update(self, request, *args, **kwargs):
         """
@@ -189,30 +185,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
         """
         Delete a specific category.
         """
-        try:
-            with transaction.atomic():
-                category = self.get_object()
-                category_name = category.category_name
-                category.delete()
-                
-                return Response({
-                    'status': 'success',
-                    'message': f'Category "{category_name}" deleted successfully'
-                }, status=status.HTTP_204_NO_CONTENT)
-                
-        except Category.DoesNotExist:
+        with transaction.atomic():
+            category = self.get_object()
+            category_name = category.category_name
+            category.delete()
+            
             return Response({
-                'status': 'error',
-                'message': 'Category not found'
-            }, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({
-                'status': 'error',
-                'message': f'Error deleting category: {str(e)}'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'status': 'success',
+                'message': f'Category "{category_name}" deleted successfully'
+            }, status=status.HTTP_204_NO_CONTENT)
     
     @action(detail=False, methods=['get'])
-    def active(self, request):
+    def active(self, request, org_id=None):
         """
         List only active categories.
         """
@@ -234,36 +218,24 @@ class CategoryViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     @action(detail=True, methods=['post'])
-    def toggle_status(self, request, pk=None):
+    def toggle_status(self, request, pk=None, org_id=None):
         """
         Toggle the active status of a category.
         """
-        try:
-            with transaction.atomic():
-                category = self.get_object()
-                category.is_active = not category.is_active
-                category.save()
-                
-                serializer = self.get_serializer(category)
-                
-                status_text = 'activated' if category.is_active else 'deactivated'
-                
-                return Response({
-                    'status': 'success',
-                    'message': f'Category "{category.category_name}" {status_text} successfully',
-                    'data': serializer.data
-                }, status=status.HTTP_200_OK)
-                
-        except Category.DoesNotExist:
+        with transaction.atomic():
+            category = self.get_object()
+            category.is_active = not category.is_active
+            category.save()
+            
+            serializer = self.get_serializer(category)
+            
+            status_text = 'activated' if category.is_active else 'deactivated'
+            
             return Response({
-                'status': 'error',
-                'message': 'Category not found'
-            }, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({
-                'status': 'error',
-                'message': f'Error toggling category status: {str(e)}'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'status': 'success',
+                'message': f'Category "{category.category_name}" {status_text} successfully',
+                'data': serializer.data
+            }, status=status.HTTP_200_OK)
 
 
 

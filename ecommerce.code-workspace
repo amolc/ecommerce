@@ -2,33 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "../freshpicks"
-		},
-		{
-			"path": "../stayvillas"
-		},
-		{
-			"path": "../stayvillas-api"
-		},
-		{
-			"path": "../quantengine"
-		},
-		{
-			"path": "../quantbots"
-		},
-		{
-			"path": "../simpleincome"
-		},
-		{
-			"path": "../quantstrategy"
-		},
-		{
-			"path": "../quantcode"
-		},
-		{
-			"path": "../quantbotsco"
 		}
 	],
 	"settings": {}

@@ -1,4 +1,5 @@
 from django.db import models
+from organisations.models import Organisation
 
 # Create your models here.
 class Category(models.Model):
@@ -33,7 +34,7 @@ class Category(models.Model):
     organisation: models.ForeignKey = models.ForeignKey(
         Organisation,
         on_delete=models.DO_NOTHING,
-        related_name="product_categories",
+        related_name="categories",
     )
 
     def __str__(self):

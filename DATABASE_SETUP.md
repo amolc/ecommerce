@@ -2,31 +2,31 @@
 
 ## Configuration Options
 
-This project supports multiple database configurations:
+This project uses MySQL database exclusively across all environments.
 
-### 1. SQLite (Local Development)
+### 1. MySQL (Development)
 
-The simplest option for local development is to use SQLite, which requires no additional setup:
-
-```bash
-export DJANGO_SETTINGS_MODULE="restserver.settings.local"
-```
-
-This configuration is used by default in the `runserver.sh` script.
-
-### 2. MySQL (Development)
-
-For a more production-like environment, you can use MySQL:
+For development environment, use the development settings:
 
 ```bash
 export DJANGO_SETTINGS_MODULE="restserver.settings.development"
 ```
 
+This configuration is used by default in the `runserver.sh` script.
+
+### 2. MySQL (Production)
+
+For production environment, use the production settings:
+
+```bash
+export DJANGO_SETTINGS_MODULE="restserver.settings.production"
+```
+
 This requires:
 - MySQL client library installed (`pip install mysqlclient`)
-- Local MySQL server running (or connection to a remote MySQL server)
-- Database named `flipopo_dev`
-- Access with user `pamosapicks` and password `10gXWOqeaf1`
+- Connection to the remote MySQL server at `db.pamosapicks.com`
+- Database named `pamosapicks`
+- Access with user `pamosapicks` and password `10gXWOqeaf!`
 
 To set up a local MySQL server on macOS:
 
@@ -52,30 +52,27 @@ pip install mysqlclient
 
 Alternatively, you can connect to the remote MySQL database at `db.pamosapicks.com` by changing the HOST setting in development.py.
 
-### 3. PostgreSQL (Production)
+### 3. MySQL (Local)
 
-The production configuration uses environment variables for connection details:
+For local development with a local MySQL server:
 
 ```bash
-export DJANGO_SETTINGS_MODULE="restserver.settings.production"
+export DJANGO_SETTINGS_MODULE="restserver.settings.local"
 ```
 
-Environment variables are typically set in `scripts/configs/ecommerce.sh`.
+This uses the same MySQL configuration as production but can be modified for local development.
 
 ## Troubleshooting
 
 If you encounter database connection issues:
 
-### PostgreSQL Issues
-1. Verify PostgreSQL is running: `pg_isready -h localhost -p 5432`
-2. Check user credentials if using PostgreSQL
-3. Ensure psycopg2 is properly installed: `pip install --force-reinstall psycopg2-binary`
-
 ### MySQL Issues
 1. If you see an error about authentication plugin 'mysql_native_password' not being loaded, this is because MySQL 8+ uses `caching_sha2_password` by default
-2. The Django settings have been configured to use this authentication plugin via the 'OPTIONS' setting in development.py
-3. Verify MySQL is running: `brew services list | grep mysql`
-4. Check user credentials and permissions: `mysql -u root -e "SELECT User, Host, plugin FROM mysql.user WHERE User = 'pamosapicks';"` 
+2. The Django settings have been configured to use this authentication plugin via the 'OPTIONS' setting in the database configuration
+3. Verify MySQL connection: `mysql -h db.pamosapicks.com -u pamosapicks -p`
+4. Check user credentials and permissions: `mysql -h db.pamosapicks.com -u pamosapicks -p -e "SHOW DATABASES;"`
 
 ### General
-1. For simplicity, switch to SQLite for local development
+1. Ensure MySQL client library is installed: `pip install mysqlclient`
+2. Check network connectivity to the database server
+3. Verify the database credentials in your settings file
