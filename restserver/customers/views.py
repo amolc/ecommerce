@@ -77,6 +77,8 @@ class RegisterCustomerViews(APIView):
 class AuthenticateUser(APIView):
     def post(self, request: Request, *args: Any, **kwargs: Any):
         try:
+            print("Request Data:", request.data)
+
             serializer = LoginSerializer(
                 data=request.data,
                 context={
@@ -84,9 +86,15 @@ class AuthenticateUser(APIView):
                 }
             )
             if serializer.is_valid():
-                user_data = Customer.objects.filter(
-                    mobile_number=request.data['mobile_number']
-                ).first()
+                # Check if login is using email or mobile number
+                if 'email' in request.data:
+                    user_data = Customer.objects.filter(
+                        email=request.data['email']
+                    ).first()
+                else:
+                    user_data = Customer.objects.filter(
+                        mobile_number=request.data['mobile_number']
+                    ).first()
 
                 if not user_data:
                     return Response(
