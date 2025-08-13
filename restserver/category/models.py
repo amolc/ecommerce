@@ -1,7 +1,6 @@
 from django.db import models
 from organisations.models import Organisation
 
-# Create your models here.
 class Category(models.Model):
     class Meta:
         verbose_name_plural = 'product_categories'
@@ -20,7 +19,8 @@ class Category(models.Model):
     is_active: models.BooleanField = models.BooleanField(
         default=True
     )
-    category_image: models.TextField = models.TextField(
+    category_image: models.ImageField = models.ImageField(
+        upload_to='category_images/',
         null=True,
         blank=True
     )

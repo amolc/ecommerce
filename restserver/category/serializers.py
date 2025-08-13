@@ -26,3 +26,9 @@ class CategorySerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
         ]
+        extra_kwargs = {
+            'category_name': {'required': True},
+            'category_description': {'required': True},
+            'is_active': {'required': True},
+            'category_image': {'required': True}
+        }

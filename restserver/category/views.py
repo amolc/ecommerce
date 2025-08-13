@@ -13,6 +13,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.serializers import Serializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 # Create your views here.
@@ -34,6 +35,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, FormParser)
     
     def list(self, request, *args, **kwargs):
         """
@@ -71,7 +73,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         """
-        Create a new category.
+        Create a new category with multipart/form-data support.
         """
         try:
             with transaction.atomic():

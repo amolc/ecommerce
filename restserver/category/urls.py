@@ -1,13 +1,17 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from .views import CategoryViewSet
 
-# Create a router and register our ViewSet
-router = DefaultRouter()
-router.register(r'categories', CategoryViewSet, basename='category')
+# Define view actions
+category_list = CategoryViewSet.as_view({'get': 'list'})
+category_detail = CategoryViewSet.as_view({'get': 'retrieve'})
+category_create = CategoryViewSet.as_view({'post': 'create'})
+category_update = CategoryViewSet.as_view({'put': 'update', 'patch': 'partial_update'})
+category_delete = CategoryViewSet.as_view({'delete': 'destroy'})
 
-# URL patterns for the ViewSet
 urlpatterns = [
-    # ViewSet URLs
-    path('', include(router.urls)),
+    path('categories/get-categories/', category_list, name='get-categories'),
+    path('categories/get-category/<int:pk>/', category_detail, name='get-category'),
+    path('categories/create-category/', category_create, name='create-category'),
+    path('categories/update-category/<int:pk>/', category_update, name='update-category'),
+    path('categories/delete-category/<int:pk>/', category_delete, name='delete-category'),
 ]
