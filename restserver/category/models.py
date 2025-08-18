@@ -19,10 +19,11 @@ class Category(models.Model):
     is_active: models.BooleanField = models.BooleanField(
         default=True
     )
-    category_image: models.ImageField = models.ImageField(
-        upload_to='category_images/',
+    # Changed from ImageField → TextField
+    category_image: models.TextField = models.TextField(
         null=True,
-        blank=True
+        blank=True,
+        help_text="Store image URL, path, or Base64 text"
     )
     created_at: models.DateTimeField = models.DateTimeField(
         auto_now_add=True

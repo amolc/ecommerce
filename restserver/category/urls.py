@@ -9,9 +9,9 @@ category_update = CategoryViewSet.as_view({'put': 'update', 'patch': 'partial_up
 category_delete = CategoryViewSet.as_view({'delete': 'destroy'})
 
 urlpatterns = [
-    path('categories/get-categories/', category_list, name='get-categories'),
-    path('categories/get-category/<int:pk>/', category_detail, name='get-category'),
-    path('categories/create-category/', category_create, name='create-category'),
-    path('categories/update-category/<int:pk>/', category_update, name='update-category'),
-    path('categories/delete-category/<int:pk>/', category_delete, name='delete-category'),
+    path('get-categories/', category_list, name='get-categories'),
+    path('get-category/<int:pk>/', category_detail, name='get-category'),
+    path('create-category/', category_create, name='create-category'),
+    path('update-category/<int:pk>/', category_update, name='update-category'),
+    path('delete-category/<int:pk>/', category_delete, name='delete-category'),
 ]
