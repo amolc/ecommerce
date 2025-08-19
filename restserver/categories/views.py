@@ -1,49 +1,23 @@
-from rest_framework import generics
-from .models import Category, SubCategory
-from .serializers import CategorySerializer, SubCategorySerializer
+from rest_framework import viewsets, status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from .models import Category
+from .serializers import CategorySerializer
 
-
-# Category List + Create
-class CategoryListCreateView(generics.ListCreateAPIView):
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
 
-    def get_queryset(self):
-        org_id = self.kwargs["org_id"]
-        return Category.objects.filter(organisation_id=org_id)
+    # You can customize create/update responses if your project does this elsewhere
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
-    def perform_create(self, serializer):
-        org_id = self.kwargs["org_id"]
-        serializer.save(organisation_id=org_id)
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
 
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
-# Category Detail (Retrieve, Update, Delete)
-class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = CategorySerializer
-    lookup_field = "pk"
-
-    def get_queryset(self):
-        org_id = self.kwargs["org_id"]
-        return Category.objects.filter(organisation_id=org_id)
-
-
-# SubCategory List + Create
-class SubCategoryListCreateView(generics.ListCreateAPIView):
-    serializer_class = SubCategorySerializer
-
-    def get_queryset(self):
-        category_id = self.kwargs["category_id"]
-        return SubCategory.objects.filter(category_id=category_id)
-
-    def perform_create(self, serializer):
-        category_id = self.kwargs["category_id"]
-        serializer.save(category_id=category_id)
-
-
-# SubCategory Detail (Retrieve, Update, Delete)
-class SubCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = SubCategorySerializer
-    lookup_field = "pk"
-
-    def get_queryset(self):
-        category_id = self.kwargs["category_id"]
-        return SubCategory.objects.filter(category_id=category_id)
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)

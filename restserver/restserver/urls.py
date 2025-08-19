@@ -16,6 +16,9 @@ urlpatterns = [
     path("<int:org_id>/api/products/", include('products.urls')),
     path("<int:org_id>/api/orders/", include('orders.urls')),
     path("<int:org_id>/api/inventory/", include('inventory.urls')),
+    path("<int:org_id>/api/categories/", include('categories.urls')),
+    path("<int:org_id>/api/subcategories/", include('subcategories.urls')),
+
 
 
 

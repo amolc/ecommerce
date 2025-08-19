@@ -1,18 +1,16 @@
 from django.urls import path
-from .views import (
-    CategoryListCreateView,
-    CategoryDetailView,
-    SubCategoryListCreateView,
-    SubCategoryDetailView,
-)
+from .views import CategoryViewSet
+
+category_list = CategoryViewSet.as_view({'get': 'list'})
+category_detail = CategoryViewSet.as_view({'get': 'retrieve'})
+category_create = CategoryViewSet.as_view({'post': 'create'})
+category_update = CategoryViewSet.as_view({'put': 'update', 'patch': 'partial_update'})
+category_delete = CategoryViewSet.as_view({'delete': 'destroy'})
 
 urlpatterns = [
-    # Categories
-    path("", CategoryListCreateView.as_view(), name="category-list-create"),
-    path("<int:pk>/", CategoryDetailView.as_view(), name="category-detail"),
-
-    # Subcategories
-    path("<int:category_id>/subcategories/", SubCategoryListCreateView.as_view(), name="subcategory-list-create"),
-    path("<int:category_id>/subcategories/<int:pk>/", SubCategoryDetailView.as_view(), name="subcategory-detail"),
+    path('get-categories/', category_list, name='get-categories'),
+    path('get-category/<int:pk>/', category_detail, name='get-category'),
+    path('create-category/', category_create, name='create-category'),
+    path('update-category/<int:pk>/', category_update, name='update-category'),
+    path('delete-category/<int:pk>/', category_delete, name='delete-category'),
 ]
-

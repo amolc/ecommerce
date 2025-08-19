@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'inventory',
     'django_extensions',
     'categories',
-
+    'subcategories',
 
 
 
