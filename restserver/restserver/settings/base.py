@@ -67,8 +67,12 @@ INSTALLED_APPS = [
     'products',
     'orders',
     'inventory',
-    'category',
     'django_extensions',
+    'categories',
+
+
+
+
 ]
 
 MIDDLEWARE = [
