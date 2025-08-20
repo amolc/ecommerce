@@ -1,10 +1,7 @@
 from rest_framework import serializers
-from .models import Subcategory
+from .models import SubCategory
 
-class SubcategorySerializer(serializers.ModelSerializer):
-    # If you want category name read-only, uncomment the next line and add to fields
-    # category_name = serializers.CharField(source='category.category_name', read_only=True)
-
+class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Subcategory
-        fields = ['id', 'subcategory_name', 'subcategory_description', 'category']
+        model = SubCategory
+        fields = ['id', 'subcategory_name', 'subcategory_description', 'is_active', 'category']
