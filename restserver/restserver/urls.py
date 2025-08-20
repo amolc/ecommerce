@@ -3,13 +3,19 @@ from django.urls import path, include
 from django.conf import settings
 from django.http import HttpRequest
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
 
 def trigger_error(request: HttpRequest):
     1 / 0
 
 
+def home(request):
+    return HttpResponse("Welcome to the ecommerce API")
+
+
 urlpatterns = [
+    path('', home),  # Add this line for root URL handling
     path("<int:org_id>/api/stores/", include('stores.urls')),
     path("<int:org_id>/api/staff/", include('staff.urls')),
     path("<int:org_id>/api/customers/", include('customers.urls')),
